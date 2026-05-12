@@ -1,860 +1,456 @@
- // ============================================================
-// נתוני המוצרים – רמי לויאני עסקי מזון בע”מ
-// ============================================================
+// products.js – רמי לויאני עסקי מזון
 
-// תמונות לפי קטגוריות ותתי-קטגוריות (Unsplash)
-const IMAGES = {
-// ממרחים
-“ממרח_שוקולד”: “https://images.unsplash.com/photo-1548848221-0c2e497ed557?w=400&q=80”,
-“ממרח_פיסטוק”: “https://images.unsplash.com/photo-1605548109944-9040f46a7a2e?w=400&q=80”,
-“ממרח_חלבה”: “https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&q=80”,
-“ממרח_לוטוס”: “https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&q=80”,
-“ממרח_בוטנים”: “https://images.unsplash.com/photo-1622543925917-763c34d1a86e?w=400&q=80”,
-“ממרח_לוז”: “https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=80”,
-“ממרח_קשיו”: “https://images.unsplash.com/photo-1490885578174-acda8905c2c6?w=400&q=80”,
-“ממרח_שקדים”: “https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400&q=80”,
-“ממרח_תמרים”: “https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80”,
-“ריבה”: “https://images.unsplash.com/photo-1563673800951-96e8a99e63ad?w=400&q=80”,
-“ריבת_חלב”: “https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=400&q=80”,
-“מלית”: “https://images.unsplash.com/photo-1571108000978-76c47b3a49d0?w=400&q=80”,
-“סילאן”: “https://images.unsplash.com/photo-1558642084-fd07fae5282e?w=400&q=80”,
-“סירופ”: “https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=400&q=80”,
-“גלוקוזה”: “https://images.unsplash.com/photo-1582563495014-2cdf6bcb5b3a?w=400&q=80”,
-“חמאה”: “https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&q=80”,
-“שוקולד_כפתורים”: “https://images.unsplash.com/photo-1511381939415-e44015466834?w=400&q=80”,
-“ביסקוויט”: “https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&q=80”,
-“גליליות”: “https://images.unsplash.com/photo-1589841494578-5c22eb58e9da?w=400&q=80”,
-“פרלין”: “https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=400&q=80”,
-“ציפוי”: “https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=400&q=80”,
-“בייגלה”: “https://images.unsplash.com/photo-1509461399763-ae67a981b254?w=400&q=80”,
-“דובדבן”: “https://images.unsplash.com/photo-1528821128474-27f963b062bf?w=400&q=80”,
-“פצפוצים”: “https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&q=80”,
-“קרמבו”: “https://images.unsplash.com/photo-1558469138-a1e68bd7e960?w=400&q=80”,
-“מיונז”: “https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&q=80”,
-“ממרח_default”: “https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=400&q=80”,
-
-// שוקולדים
-“שוקולד_מריר”: “https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=400&q=80”,
-“שוקולד_חלב”: “https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=400&q=80”,
-“שוקולד_לבן”: “https://images.unsplash.com/photo-1548741487-18d363dc4469?w=400&q=80”,
-“קקאו”: “https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&q=80”,
-“צמקאו”: “https://images.unsplash.com/photo-1511381939415-e44015466834?w=400&q=80”,
-“מזרה”: “https://images.unsplash.com/photo-1549212863-1aac4f166f29?w=400&q=80”,
-“זיתים”: “https://images.unsplash.com/photo-1571197119738-e8bbd04ef8f4?w=400&q=80”,
-“טונה”: “https://images.unsplash.com/photo-1559847844-5315695dadae?w=400&q=80”,
-“פטריות”: “https://images.unsplash.com/photo-1504545102780-26774c1bb073?w=400&q=80”,
-“רוטב”: “https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&q=80”,
-“רסק_עגבניות”: “https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80”,
-“שוקולד_default”: “https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=400&q=80”,
-
-// שמן ומרגרינה
-“שמן_חמניה”: “https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&q=80”,
-“שמן_קנולה”: “https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=400&q=80”,
-“שמן_זית”: “https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&q=80”,
-“שמן_קוקוס”: “https://images.unsplash.com/photo-1580509376733-7d29aa24a90a?w=400&q=80”,
-“מרגרינה”: “https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&q=80”,
-“חמאת_קקאו”: “https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&q=80”,
-“שמן_default”: “https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&q=80”,
-
-// תמציות ותבלינים
-“קמח”: “https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&q=80”,
-“סוכר”: “https://images.unsplash.com/photo-1558642084-fd07fae5282e?w=400&q=80”,
-“שמרים”: “https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80”,
-“ג_לטין”: “https://images.unsplash.com/photo-1582563495014-2cdf6bcb5b3a?w=400&q=80”,
-“תמצית_וניל”: “https://images.unsplash.com/photo-1507434965515-61970f2bd7c6?w=400&q=80”,
-“תמצית”: “https://images.unsplash.com/photo-1558612497-8f4bcfc79a7d?w=400&q=80”,
-“תבלין_קינמון”: “https://images.unsplash.com/photo-1513530534585-c7b1394c6d51?w=400&q=80”,
-“תבלין”: “https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=400&q=80”,
-“אבקת_קקאו”: “https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&q=80”,
-“אבקת_סוכר”: “https://images.unsplash.com/photo-1558642084-fd07fae5282e?w=400&q=80”,
-“קפה”: “https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=400&q=80”,
-“פודינג”: “https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400&q=80”,
-“מאפינס”: “https://images.unsplash.com/photo-1558303890-1f7d39c93a40?w=400&q=80”,
-“דבש”: “https://images.unsplash.com/photo-1558642084-fd07fae5282e?w=400&q=80”,
-“אגר”: “https://images.unsplash.com/photo-1582563495014-2cdf6bcb5b3a?w=400&q=80”,
-“מלח”: “https://images.unsplash.com/photo-1518110925495-5fe2fda0442c?w=400&q=80”,
-“תבלין_default”: “https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=400&q=80”,
-
-// אגוזים ופירות
-“שקד”: “https://images.unsplash.com/photo-1574570173583-21a946a1e83a?w=400&q=80”,
-“אגוז_לוז”: “https://images.unsplash.com/photo-1568740347312-94bf5e386b1e?w=400&q=80”,
-“אגוז_מלך”: “https://images.unsplash.com/photo-1603046891744-1f0b5c6a7e54?w=400&q=80”,
-“פיסטוק”: “https://images.unsplash.com/photo-1590080876351-41f4cf03fa7a?w=400&q=80”,
-“קשיו”: “https://images.unsplash.com/photo-1590080876351-41f4cf03fa7a?w=400&q=80”,
-“פקאן”: “https://images.unsplash.com/photo-1572464483156-00e2d4bb3f44?w=400&q=80”,
-“בוטנים”: “https://images.unsplash.com/photo-1567380177130-0b4f33a51f37?w=400&q=80”,
-“קוקוס”: “https://images.unsplash.com/photo-1580509376733-7d29aa24a90a?w=400&q=80”,
-“שומשום”: “https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80”,
-“צנובר”: “https://images.unsplash.com/photo-1572464483156-00e2d4bb3f44?w=400&q=80”,
-“חמוציות”: “https://images.unsplash.com/photo-1563746099882-0d5d34cf5e97?w=400&q=80”,
-“צימוק”: “https://images.unsplash.com/photo-1563746099882-0d5d34cf5e97?w=400&q=80”,
-“תמר”: “https://images.unsplash.com/photo-1596554933370-3b2a8b3a49ad?w=400&q=80”,
-“אננס”: “https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=400&q=80”,
-“מנגו”: “https://images.unsplash.com/photo-1553279768-865429fa0078?w=400&q=80”,
-“משמש”: “https://images.unsplash.com/photo-1586161024768-f96bc6ad0b12?w=400&q=80”,
-“תאנים”: “https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=400&q=80”,
-“שזיף”: “https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=400&q=80”,
-“תות”: “https://images.unsplash.com/photo-1518635017498-87f514b751ba?w=400&q=80”,
-“קינואה”: “https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&q=80”,
-“אורז”: “https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=400&q=80”,
-“שיבולת_שועל”: “https://images.unsplash.com/photo-1614961233913-a5113a4a34ed?w=400&q=80”,
-“כוסמת”: “https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&q=80”,
-“בורגול”: “https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&q=80”,
-“פרג”: “https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80”,
-“גרעיני”: “https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80”,
-“ציה”: “https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80”,
-“אגוז_default”: “https://images.unsplash.com/photo-1574570173583-21a946a1e83a?w=400&q=80”,
-
-// עזרי אפייה
-“נייר_אפייה”: “https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80”,
-“שק_זילוף”: “https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80”,
-“מגש”: “https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=400&q=80”,
-“קופסא”: “https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&q=80”,
-“צלחת”: “https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&q=80”,
-“תבנית”: “https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80”,
-“כפפות”: “https://images.unsplash.com/photo-1583947581924-860bda6a26df?w=400&q=80”,
-“בכלי_default”: “https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80”,
-};
-
-// Category labels
 const CAT_LABELS = {
-1: “ממרחים ומחיות”,
-2: “שוקולדים ותוספות”,
-3: “שמן ומרגרינה”,
-4: “תמציות ותבלינים”,
-5: “קטניות, פירות ואגוזים”,
-8: “עזרי אפייה”,
-9: “קטניות, פירות ואגוזים”,
+  1: "ממרחים ומחיות",
+  2: "שוקולדים ותוספות",
+  3: "שמן ומרגרינה",
+  4: "תמציות ותבלינים",
+  5: "קטניות, פירות ואגוזים",
+  8: "עזרי אפייה",
+  9: "קטניות, פירות ואגוזים"
 };
 
-// Image picker function
 function pickImage(name, cat) {
-const n = name;
-// Category 1 – ממרחים
-if (cat === 1) {
-if (n.includes(“נוטלה”) || n.includes(“פררו”) || (n.includes(“שוקולד”) && n.includes(“ממרח”))) return IMAGES[“ממרח_שוקולד”];
-if (n.includes(“פיסטוק”)) return IMAGES[“ממרח_פיסטוק”];
-if (n.includes(“חלבה”)) return IMAGES[“ממרח_חלבה”];
-if (n.includes(“לוטוס”) || n.includes(“ספקולוס”) || n.includes(“צ’ארה”) || n.includes(“קינדר”)) return IMAGES[“ממרח_לוטוס”];
-if (n.includes(“בוטנים”)) return IMAGES[“ממרח_בוטנים”];
-if (n.includes(“לוז”) || n.includes(“רוזמרי”)) return IMAGES[“ממרח_לוז”];
-if (n.includes(“קשיו”)) return IMAGES[“ממרח_קשיו”];
-if (n.includes(“שקדים”)) return IMAGES[“ממרח_שקדים”];
-if (n.includes(“תמרים”)) return IMAGES[“ממרח_תמרים”];
-if (n.includes(“ריבת חלב”) || n.includes(“ריבה”)) return IMAGES[“ריבת_חלב”];
-if (n.includes(“מלית”) || n.includes(“מילוי”)) return IMAGES[“מלית”];
-if (n.includes(“סילאן”)) return IMAGES[“סילאן”];
-if (n.includes(“סירופ”) || n.includes(“מתק”)) return IMAGES[“סירופ”];
-if (n.includes(“גלוקוזה”)) return IMAGES[“גלוקוזה”];
-if (n.includes(“חמאה”) && !n.includes(“בוטנים”)) return IMAGES[“חמאה”];
-if (n.includes(“כפתורים”) || n.includes(“מטבעות”) || n.includes(“פנינים”)) return IMAGES[“שוקולד_כפתורים”];
-if (n.includes(“ביסקוויט”) || n.includes(“ביסקויט”)) return IMAGES[“ביסקוויט”];
-if (n.includes(“גליליות”)) return IMAGES[“גליליות”];
-if (n.includes(“פרלין”)) return IMAGES[“פרלין”];
-if (n.includes(“ציפוי”) || n.includes(“צמקאו”)) return IMAGES[“ציפוי”];
-if (n.includes(“בייגלה”)) return IMAGES[“בייגלה”];
-if (n.includes(“דובדבן”)) return IMAGES[“דובדבן”];
-if (n.includes(“פצפוצים”) || n.includes(“קורנפלקס”)) return IMAGES[“פצפוצים”];
-if (n.includes(“מיונז”)) return IMAGES[“מיונז”];
-if (n.includes(“קרמבו”)) return IMAGES[“קרמבו”];
-return IMAGES[“ממרח_default”];
-}
-// Category 2 – שוקולדים
-if (cat === 2) {
-if (n.includes(“מריר”)) return IMAGES[“שוקולד_מריר”];
-if (n.includes(“חלב”) && n.includes(“שוקולד”)) return IMAGES[“שוקולד_חלב”];
-if (n.includes(“לבן”) && n.includes(“שוקולד”)) return IMAGES[“שוקולד_לבן”];
-if (n.includes(“קקאו”) || n.includes(“עיסת”)) return IMAGES[“קקאו”];
-if (n.includes(“צמקאו”)) return IMAGES[“צמקאו”];
-if (n.includes(“מזרה”)) return IMAGES[“מזרה”];
-if (n.includes(“זית”)) return IMAGES[“זיתים”];
-if (n.includes(“טונה”)) return IMAGES[“טונה”];
-if (n.includes(“פטריות”)) return IMAGES[“פטריות”];
-if (n.includes(“רוטב”)) return IMAGES[“רוטב”];
-if (n.includes(“רסק”)) return IMAGES[“רסק_עגבניות”];
-if (n.includes(“מיונז”)) return IMAGES[“מיונז”];
-if (n.includes(“סויה”) || n.includes(“פיצה”)) return IMAGES[“רוטב”];
-return IMAGES[“שוקולד_default”];
-}
-// Category 3 – שמן ומרגרינה
-if (cat === 3) {
-if (n.includes(“חמניה”) || n.includes(“חמניות”)) return IMAGES[“שמן_חמניה”];
-if (n.includes(“קנולה”)) return IMAGES[“שמן_קנולה”];
-if (n.includes(“זית”)) return IMAGES[“שמן_זית”];
-if (n.includes(“קוקוס”)) return IMAGES[“שמן_קוקוס”];
-if (n.includes(“מרגרינה”)) return IMAGES[“מרגרינה”];
-if (n.includes(“חמאת קקאו”)) return IMAGES[“חמאת_קקאו”];
-return IMAGES[“שמן_default”];
-}
-// Category 4 – תמציות ותבלינים
-if (cat === 4) {
-if (n.includes(“קמח”)) return IMAGES[“קמח”];
-if (n.includes(“סוכר אבקה”) || n.includes(“אבקת סוכר”)) return IMAGES[“אבקת_סוכר”];
-if (n.includes(“סוכר”)) return IMAGES[“סוכר”];
-if (n.includes(“שמרים”)) return IMAGES[“שמרים”];
-if (n.includes(“ג’לטין”) || n.includes(“אגר”)) return IMAGES[“ג_לטין”];
-if (n.includes(“וניל”) && n.includes(“תמצית”)) return IMAGES[“תמצית_וניל”];
-if (n.includes(“תמצית”)) return IMAGES[“תמצית”];
-if (n.includes(“קינמון”)) return IMAGES[“תבלין_קינמון”];
-if (n.includes(“קקאו”) && n.includes(“אבקת”)) return IMAGES[“אבקת_קקאו”];
-if (n.includes(“קפה”)) return IMAGES[“קפה”];
-if (n.includes(“פודינג”)) return IMAGES[“פודינג”];
-if (n.includes(“מאפינס”)) return IMAGES[“מאפינס”];
-if (n.includes(“דבש”)) return IMAGES[“דבש”];
-if (n.includes(“מלח”)) return IMAGES[“מלח”];
-if (n.includes(“תבלין”)) return IMAGES[“תבלין”];
-return IMAGES[“תבלין_default”];
-}
-// Category 5/9 – אגוזים ופירות
-if (cat === 5 || cat === 9) {
-if (n.includes(“שקד”)) return IMAGES[“שקד”];
-if (n.includes(“לוז”)) return IMAGES[“אגוז_לוז”];
-if (n.includes(“אגוז מלך”)) return IMAGES[“אגוז_מלך”];
-if (n.includes(“פיסטוק”)) return IMAGES[“פיסטוק”];
-if (n.includes(“קשיו”)) return IMAGES[“קשיו”];
-if (n.includes(“פקאן”)) return IMAGES[“פקאן”];
-if (n.includes(“בוטן”)) return IMAGES[“בוטנים”];
-if (n.includes(“קוקוס”)) return IMAGES[“קוקוס”];
-if (n.includes(“שומשום”)) return IMAGES[“שומשום”];
-if (n.includes(“צנובר”)) return IMAGES[“צנובר”];
-if (n.includes(“חמוציות”)) return IMAGES[“חמוציות”];
-if (n.includes(“צימוק”)) return IMAGES[“צימוק”];
-if (n.includes(“תמר”) || n.includes(“תמרים”)) return IMAGES[“תמר”];
-if (n.includes(“אננס”)) return IMAGES[“אננס”];
-if (n.includes(“מנגו”)) return IMAGES[“מנגו”];
-if (n.includes(“משמש”)) return IMAGES[“משמש”];
-if (n.includes(“תאנ”)) return IMAGES[“תאנים”];
-if (n.includes(“שזיף”)) return IMAGES[“שזיף”];
-if (n.includes(“תות”)) return IMAGES[“תות”];
-if (n.includes(“קינואה”)) return IMAGES[“קינואה”];
-if (n.includes(“אורז”)) return IMAGES[“אורז”];
-if (n.includes(“שיבולת”)) return IMAGES[“שיבולת_שועל”];
-if (n.includes(“כוסמת”)) return IMAGES[“כוסמת”];
-if (n.includes(“בורגול”)) return IMAGES[“בורגול”];
-if (n.includes(“פרג”)) return IMAGES[“פרג”];
-if (n.includes(“גרעיני”)) return IMAGES[“גרעיני”];
-if (n.includes(“ציה”)) return IMAGES[“ציה”];
-if (n.includes(“בננה”)) return IMAGES[“מנגו”];
-if (n.includes(“פפיה”)) return IMAGES[“מנגו”];
-if (n.includes(“ג’ינג’ר”)) return IMAGES[“תבלין_קינמון”];
-return IMAGES[“אגוז_default”];
-}
-// Category 8 – עזרי אפייה
-if (cat === 8) {
-if (n.includes(“נייר”)) return IMAGES[“נייר_אפייה”];
-if (n.includes(“שק זילוף”)) return IMAGES[“שק_זילוף”];
-if (n.includes(“מגש”)) return IMAGES[“מגש”];
-if (n.includes(“קופסא”) || n.includes(“קרטון”)) return IMAGES[“קופסא”];
-if (n.includes(“צלחת”) || n.includes(“תחתית”)) return IMAGES[“צלחת”];
-if (n.includes(“תבנית”)) return IMAGES[“תבנית”];
-if (n.includes(“כפפות”) || n.includes(“סינרים”) || n.includes(“ניגוב”)) return IMAGES[“כפפות”];
-return IMAGES[“בכלי_default”];
-}
-return IMAGES[“ממרח_default”];
+  var n = name;
+  if (cat === 1) {
+    if (n.indexOf("נוטלה") >= 0 || n.indexOf("פררו") >= 0) return "https://images.unsplash.com/photo-1548848221-0c2e497ed557?w=400&q=80";
+    if (n.indexOf("פיסטוק") >= 0) return "https://images.unsplash.com/photo-1590080876351-41f4cf03fa7a?w=400&q=80";
+    if (n.indexOf("חלבה") >= 0) return "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&q=80";
+    if (n.indexOf("לוטוס") >= 0 || n.indexOf("ספקולוס") >= 0) return "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&q=80";
+    if (n.indexOf("בוטנים") >= 0) return "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?w=400&q=80";
+    if (n.indexOf("לוז") >= 0) return "https://images.unsplash.com/photo-1568740347312-94bf5e386b1e?w=400&q=80";
+    if (n.indexOf("קשיו") >= 0) return "https://images.unsplash.com/photo-1590080876351-41f4cf03fa7a?w=400&q=80";
+    if (n.indexOf("שקדים") >= 0) return "https://images.unsplash.com/photo-1574570173583-21a946a1e83a?w=400&q=80";
+    if (n.indexOf("תמרים") >= 0) return "https://images.unsplash.com/photo-1596554933370-3b2a8b3a49ad?w=400&q=80";
+    if (n.indexOf("ריבת חלב") >= 0) return "https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=400&q=80";
+    if (n.indexOf("ריבה") >= 0) return "https://images.unsplash.com/photo-1563673800951-96e8a99e63ad?w=400&q=80";
+    if (n.indexOf("סילאן") >= 0) return "https://images.unsplash.com/photo-1558642084-fd07fae5282e?w=400&q=80";
+    if (n.indexOf("סירופ") >= 0 || n.indexOf("מתק") >= 0) return "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=400&q=80";
+    if (n.indexOf("גלוקוזה") >= 0) return "https://images.unsplash.com/photo-1582563495014-2cdf6bcb5b3a?w=400&q=80";
+    if (n.indexOf("חמאה") >= 0) return "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&q=80";
+    if (n.indexOf("כפתורים") >= 0 || n.indexOf("מטבעות") >= 0 || n.indexOf("פנינים") >= 0) return "https://images.unsplash.com/photo-1511381939415-e44015466834?w=400&q=80";
+    if (n.indexOf("ביסקוויט") >= 0 || n.indexOf("ביסקויט") >= 0) return "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&q=80";
+    if (n.indexOf("גליליות") >= 0) return "https://images.unsplash.com/photo-1589841494578-5c22eb58e9da?w=400&q=80";
+    if (n.indexOf("פרלין") >= 0) return "https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=400&q=80";
+    if (n.indexOf("ציפוי") >= 0 || n.indexOf("צמקאו") >= 0) return "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=400&q=80";
+    if (n.indexOf("בייגלה") >= 0) return "https://images.unsplash.com/photo-1509461399763-ae67a981b254?w=400&q=80";
+    if (n.indexOf("דובדבן") >= 0) return "https://images.unsplash.com/photo-1528821128474-27f963b062bf?w=400&q=80";
+    if (n.indexOf("פצפוצים") >= 0 || n.indexOf("קורנפלקס") >= 0) return "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&q=80";
+    if (n.indexOf("מיונז") >= 0) return "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&q=80";
+    if (n.indexOf("מלית") >= 0 || n.indexOf("מילוי") >= 0) return "https://images.unsplash.com/photo-1571108000978-76c47b3a49d0?w=400&q=80";
+    return "https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=400&q=80";
+  }
+  if (cat === 2) {
+    if (n.indexOf("מריר") >= 0) return "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=400&q=80";
+    if (n.indexOf("חלב") >= 0 && n.indexOf("שוקולד") >= 0) return "https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=400&q=80";
+    if (n.indexOf("לבן") >= 0 && n.indexOf("שוקולד") >= 0) return "https://images.unsplash.com/photo-1548741487-18d363dc4469?w=400&q=80";
+    if (n.indexOf("קקאו") >= 0 || n.indexOf("עיסת") >= 0) return "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&q=80";
+    if (n.indexOf("צמקאו") >= 0) return "https://images.unsplash.com/photo-1511381939415-e44015466834?w=400&q=80";
+    if (n.indexOf("מזרה") >= 0) return "https://images.unsplash.com/photo-1549212863-1aac4f166f29?w=400&q=80";
+    if (n.indexOf("זית") >= 0) return "https://images.unsplash.com/photo-1571197119738-e8bbd04ef8f4?w=400&q=80";
+    if (n.indexOf("טונה") >= 0) return "https://images.unsplash.com/photo-1559847844-5315695dadae?w=400&q=80";
+    if (n.indexOf("פטריות") >= 0) return "https://images.unsplash.com/photo-1504545102780-26774c1bb073?w=400&q=80";
+    if (n.indexOf("רוטב") >= 0) return "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&q=80";
+    if (n.indexOf("רסק") >= 0) return "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80";
+    if (n.indexOf("מיונז") >= 0) return "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&q=80";
+    return "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=400&q=80";
+  }
+  if (cat === 3) {
+    if (n.indexOf("קוקוס") >= 0) return "https://images.unsplash.com/photo-1580509376733-7d29aa24a90a?w=400&q=80";
+    if (n.indexOf("מרגרינה") >= 0) return "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&q=80";
+    if (n.indexOf("קקאו") >= 0) return "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&q=80";
+    if (n.indexOf("זית") >= 0) return "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&q=80";
+    return "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&q=80";
+  }
+  if (cat === 4) {
+    if (n.indexOf("קמח") >= 0) return "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&q=80";
+    if (n.indexOf("סוכר") >= 0) return "https://images.unsplash.com/photo-1558642084-fd07fae5282e?w=400&q=80";
+    if (n.indexOf("שמרים") >= 0) return "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80";
+    if (n.indexOf("ג'לטין") >= 0 || n.indexOf("אגר") >= 0) return "https://images.unsplash.com/photo-1582563495014-2cdf6bcb5b3a?w=400&q=80";
+    if (n.indexOf("וניל") >= 0) return "https://images.unsplash.com/photo-1507434965515-61970f2bd7c6?w=400&q=80";
+    if (n.indexOf("תמצית") >= 0) return "https://images.unsplash.com/photo-1558612497-8f4bcfc79a7d?w=400&q=80";
+    if (n.indexOf("קינמון") >= 0) return "https://images.unsplash.com/photo-1513530534585-c7b1394c6d51?w=400&q=80";
+    if (n.indexOf("קקאו") >= 0) return "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&q=80";
+    if (n.indexOf("קפה") >= 0) return "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=400&q=80";
+    if (n.indexOf("דבש") >= 0) return "https://images.unsplash.com/photo-1558642084-fd07fae5282e?w=400&q=80";
+    if (n.indexOf("מלח") >= 0) return "https://images.unsplash.com/photo-1518110925495-5fe2fda0442c?w=400&q=80";
+    if (n.indexOf("תבלין") >= 0) return "https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=400&q=80";
+    if (n.indexOf("פודינג") >= 0) return "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400&q=80";
+    return "https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=400&q=80";
+  }
+  if (cat === 5 || cat === 9) {
+    if (n.indexOf("שקד") >= 0) return "https://images.unsplash.com/photo-1574570173583-21a946a1e83a?w=400&q=80";
+    if (n.indexOf("לוז") >= 0) return "https://images.unsplash.com/photo-1568740347312-94bf5e386b1e?w=400&q=80";
+    if (n.indexOf("אגוז מלך") >= 0) return "https://images.unsplash.com/photo-1603046891744-1f0b5c6a7e54?w=400&q=80";
+    if (n.indexOf("פיסטוק") >= 0) return "https://images.unsplash.com/photo-1590080876351-41f4cf03fa7a?w=400&q=80";
+    if (n.indexOf("קשיו") >= 0) return "https://images.unsplash.com/photo-1590080876351-41f4cf03fa7a?w=400&q=80";
+    if (n.indexOf("פקאן") >= 0) return "https://images.unsplash.com/photo-1572464483156-00e2d4bb3f44?w=400&q=80";
+    if (n.indexOf("בוטנ") >= 0) return "https://images.unsplash.com/photo-1567380177130-0b4f33a51f37?w=400&q=80";
+    if (n.indexOf("קוקוס") >= 0) return "https://images.unsplash.com/photo-1580509376733-7d29aa24a90a?w=400&q=80";
+    if (n.indexOf("שומשום") >= 0) return "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80";
+    if (n.indexOf("צנובר") >= 0) return "https://images.unsplash.com/photo-1572464483156-00e2d4bb3f44?w=400&q=80";
+    if (n.indexOf("חמוציות") >= 0) return "https://images.unsplash.com/photo-1563746099882-0d5d34cf5e97?w=400&q=80";
+    if (n.indexOf("צימוק") >= 0) return "https://images.unsplash.com/photo-1563746099882-0d5d34cf5e97?w=400&q=80";
+    if (n.indexOf("תמר") >= 0) return "https://images.unsplash.com/photo-1596554933370-3b2a8b3a49ad?w=400&q=80";
+    if (n.indexOf("אננס") >= 0) return "https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=400&q=80";
+    if (n.indexOf("מנגו") >= 0) return "https://images.unsplash.com/photo-1553279768-865429fa0078?w=400&q=80";
+    if (n.indexOf("משמש") >= 0) return "https://images.unsplash.com/photo-1586161024768-f96bc6ad0b12?w=400&q=80";
+    if (n.indexOf("תאנ") >= 0) return "https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=400&q=80";
+    if (n.indexOf("תות") >= 0) return "https://images.unsplash.com/photo-1518635017498-87f514b751ba?w=400&q=80";
+    if (n.indexOf("קינואה") >= 0) return "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&q=80";
+    if (n.indexOf("אורז") >= 0) return "https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=400&q=80";
+    if (n.indexOf("שיבולת") >= 0) return "https://images.unsplash.com/photo-1614961233913-a5113a4a34ed?w=400&q=80";
+    if (n.indexOf("פרג") >= 0) return "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80";
+    if (n.indexOf("גרעיני") >= 0) return "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80";
+    if (n.indexOf("בננה") >= 0) return "https://images.unsplash.com/photo-1553279768-865429fa0078?w=400&q=80";
+    return "https://images.unsplash.com/photo-1574570173583-21a946a1e83a?w=400&q=80";
+  }
+  if (cat === 8) {
+    if (n.indexOf("נייר") >= 0) return "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80";
+    if (n.indexOf("שק זילוף") >= 0) return "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80";
+    if (n.indexOf("מגש") >= 0) return "https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=400&q=80";
+    if (n.indexOf("קופסא") >= 0 || n.indexOf("קרטון") >= 0) return "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&q=80";
+    if (n.indexOf("צלחת") >= 0 || n.indexOf("תחתית") >= 0) return "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&q=80";
+    if (n.indexOf("תבנית") >= 0) return "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80";
+    if (n.indexOf("כפפות") >= 0 || n.indexOf("סינרים") >= 0) return "https://images.unsplash.com/photo-1583947581924-860bda6a26df?w=400&q=80";
+    return "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80";
+  }
+  return "https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=400&q=80";
 }
 
-// ============================================================
-// FULL PRODUCT LIST
-// ============================================================
-const PRODUCTS = [
-// ===== ממרחים ומחיות (cat 1) =====
-{id:40459,cat:1,name:‘איזומלט (20 ק”ג)’},
-{id:10325,cat:1,name:‘אצבעות שוקולד חלב 8 ס”מ’},
-{id:11176,cat:1,name:‘בייגלה טחון 10 ק”ג’},
-{id:10320,cat:1,name:‘בייגלה מצופה שוקולד חלב’},
-{id:10319,cat:1,name:“בייגלה מצופה שוקולד לבן 8*500 גר’”},
-{id:11177,cat:1,name:‘ביסקוויט טחון קרמל 10 ק”ג’},
-{id:10063,cat:1,name:‘ביסקויט בטעם קרמל (לוטוס) 4 ק”ג’},
-{id:10061,cat:1,name:‘ביסקויט פתיבר וניל טחון 5 ק”ג’},
-{id:10031,cat:1,name:‘ביסקויט קרמבו שחור 4 ק”ג’},
-{id:10068,cat:1,name:‘ביסקויט קרמל טחון 5 ק”ג’},
-{id:10069,cat:1,name:‘ביסקויט שחור טחון 5 ק”ג’},
-{id:10233,cat:1,name:‘בלוק חלבה 3 ק”ג’},
-{id:11015,cat:1,name:‘גלוקוזה בדלי’},
-{id:10231,cat:1,name:‘גלזורה שקופה (13 ק”ג)’},
-{id:10066,cat:1,name:‘גליליות ארוך (130 יחידות)’},
-{id:10064,cat:1,name:‘גליליות קצר (290 יחידות)’},
-{id:11109,cat:1,name:‘דובדבן אמרנה 5 ק”ג’},
-{id:11108,cat:1,name:‘דובדבן בסירופ’},
-{id:11105,cat:1,name:‘דובדבן מסוכר יבש (10 ק”ג)’},
-{id:11014,cat:1,name:‘חלב מרוכז (10 ק”ג)’},
-{id:10111,cat:1,name:‘חלב צמחי (5 ק”ג) שמנת גלידן – עד”ח’},
-{id:10101,cat:1,name:‘חלב צמחי (5 ק”ג) שמנת גלידן’},
-{id:10287,cat:1,name:‘חמאה (25 ק”ג) מהדרין’},
-{id:10286,cat:1,name:‘חמאת בוטנים – חבית (230 ק”ג)’},
-{id:10284,cat:1,name:‘חמאת בוטנים 100% (5 ק”ג)’},
-{id:10272,cat:1,name:‘חמאת לוז 100% (5 ק”ג)’},
-{id:10282,cat:1,name:‘חמאת פיסטוק ירוק 100% (5 ק”ג)’},
-{id:10281,cat:1,name:‘חמאת קשיו 100%’},
-{id:10280,cat:1,name:‘חמאת שקדים (18 ק”ג)’},
-{id:10285,cat:1,name:‘חמאת שקדים (5 ק”ג)’},
-{id:10311,cat:1,name:‘כפתורים שוקולד חלב חלבי 5 ק”ג’},
-{id:10310,cat:1,name:‘כפתורים שוקולד מריר 52% פרווה 10 ק”ג’},
-{id:10307,cat:1,name:‘מטבעות שוקולד לבן חלבי 5 ק”ג’},
-{id:20080,cat:1,name:‘מיונז אמיתי (5 ק”ג)’},
-{id:11066,cat:1,name:‘מילוי בטעם תות שדה 22 ק”ג’},
-{id:10041,cat:1,name:‘מיני עדשים (6 ק”ג)’},
-{id:10322,cat:1,name:’מיני קורנפלקס מצופה שוקולד חלב 2*3 ק”ג’},
-{id:10323,cat:1,name:‘מיני קורנפלקס מצופה שוקולד לבן 2*3 ק”ג’},
-{id:11020,cat:1,name:‘מלית אוכמניות (13 ק”ג)’},
-{id:11042,cat:1,name:‘מלית בטעם וניל (13 ק”ג)’},
-{id:11030,cat:1,name:‘מלית דובדבן (13 ק”ג)’},
-{id:11041,cat:1,name:‘מלית פרג 22 ק”ג’},
-{id:11040,cat:1,name:‘מלית פרג (13 ק”ג)’},
-{id:10283,cat:1,name:‘מלית שקדים 13 ק”ג’},
-{id:11095,cat:1,name:‘מלית תפוח עץ ללא סוכר (10 ק”ג)’},
-{id:11036,cat:1,name:‘מלית תפוח עץ קוביות (17 ק”ג)’},
-{id:40032,cat:1,name:‘מלית תפוח עץ ת.חוץ פרימיום 5.5 ק”ג’},
-{id:10254,cat:1,name:‘ממרח אגוזי לוז רוזמרי (6 ק”ג)’},
-{id:10289,cat:1,name:‘ממרח אגוזים 50% עם קוקוס’},
-{id:11182,cat:1,name:‘ממרח בטעם פיסטוק 22 ק”ג’},
-{id:11183,cat:1,name:‘ממרח בטעם פיסטוק 6 ק”ג’},
-{id:10224,cat:1,name:‘ממרח בטעם שוקולד איטלקי (22 ק”ג)’},
-{id:10225,cat:1,name:‘ממרח בטעם שוקולד בהיר לאפייה’},
-{id:10228,cat:1,name:‘ממרח בטעם שוקולד בהיר למריחה’},
-{id:11174,cat:1,name:‘ממרח בייגלה מלוח 5 ק”ג’},
-{id:11072,cat:1,name:‘ממרח חלבה פרימיום 22 ק”ג’},
-{id:11073,cat:1,name:‘ממרח חלבה פרימיום 6 ק”ג’},
-{id:11071,cat:1,name:‘ממרח חלבה (22 ק”ג)’},
-{id:10232,cat:1,name:‘ממרח חלבה (6 ק”ג)’},
-{id:10227,cat:1,name:‘ממרח לבן בטעם שוקולד (22 ק”ג)’},
-{id:10303,cat:1,name:’ממרח לבן חלבי 2*5 ק”ג’},
-{id:11178,cat:1,name:‘ממרח לוטוס (6 ק”ג) – Bakels’},
-{id:11175,cat:1,name:‘ממרח נוטלה (3 ק”ג)’},
-{id:10241,cat:1,name:‘ממרח ספקולוס (6 ק”ג)’},
-{id:10317,cat:1,name:‘ממרח פיסטוק 2*5 ק”ג’},
-{id:11172,cat:1,name:‘ממרח פיסטוק 30% – 20 ק”ג’},
-{id:11173,cat:1,name:‘ממרח פררו רושה 5 ק”ג – חלבי’},
-{id:11181,cat:1,name:“ממרח צ’ארה (קינדר) 5 ק"ג פרווה”},
-{id:10304,cat:1,name:“ממרח צ’יארה חלבי 2*5 ק"ג”},
-{id:10229,cat:1,name:‘ממרח קינמון (22 ק”ג)’},
-{id:10234,cat:1,name:“ממרח קפוצ’ינו (6 ק"ג)”},
-{id:11171,cat:1,name:‘ממרח קקאו אגוזים 5 ק”ג’},
-{id:10302,cat:1,name:‘ממרח קקאו ואגוזי לוז חלבי 2*5 ק”ג’},
-{id:10301,cat:1,name:‘ממרח קקאו חלבי 10 ק”ג’},
-{id:10324,cat:1,name:‘ממרח קקאו פרווה 10 ק”ג’},
-{id:10223,cat:1,name:‘ממרח שוקולד – עומר’},
-{id:10222,cat:1,name:‘ממרח שוקולד MB’},
-{id:10226,cat:1,name:‘ממרח שוקולד MB טעם חמאה’},
-{id:11170,cat:1,name:“ממרח שוקולד לבן ג’ובאני 5 ק"ג”},
-{id:10326,cat:1,name:‘ממרח שוקולד לבן פרווה בד”צ עד”ח – 5 ק”ג’},
-{id:10246,cat:1,name:‘ממרח שוקולד ללא סוכר’},
-{id:11163,cat:1,name:‘ממרח תמרים טעמי הגליל 22 ק”ג – רבנות’},
-{id:11164,cat:1,name:‘ממרח תמרים טעמי הגליל בד”צ עד”ח (22 ק”ג)’},
-{id:11165,cat:1,name:‘ממרח תמרים כהה עין יהב בד”צ עד”ח (22 ק”ג)’},
-{id:11168,cat:1,name:‘ממרח תמרים ללא סוכר 22 ק”ג’},
-{id:10026,cat:1,name:‘מקופלת פצפוצים לבן (10 ק”ג)’},
-{id:11008,cat:1,name:‘מתק – תחליף דבש (13 ק”ג)’},
-{id:11009,cat:1,name:‘מתק דבש 22 ק”ג’},
-{id:11155,cat:1,name:’סוכר תמרים (10*500 גרם) – יבוא’},
-{id:11158,cat:1,name:“סילאן בג’ריקן 10*1.5 ק"ג”},
-{id:11160,cat:1,name:“סילאן בג’ריקן (5 ק"ג)”},
-{id:11153,cat:1,name:‘סילאן טבעי 100% בדלי 25 ק”ג – יבוא’},
-{id:11156,cat:1,name:‘סילאן תמרים (קוביה) 1400 ק”ג בד”צ’},
-{id:11140,cat:1,name:‘סירופ בטעם מייפל גלון (5 ק”ג)’},
-{id:11141,cat:1,name:‘סירופ בטעם שוקולד’},
-{id:11142,cat:1,name:‘סירופ מלבי 750 מ”ל’},
-{id:11016,cat:1,name:‘סירופ ריבת חלב קומידה 5 ק”ג’},
-{id:10067,cat:1,name:‘עוגיות ביצים בישקוטים 200 גרם (20)’},
-{id:10312,cat:1,name:’פנינים מ.שוקולד מיקס חלב/לבן/מריר 2*3 ק”ג’},
-{id:10315,cat:1,name:‘פנינים מצופים שוקולד חלב 2*3 ק”ג’},
-{id:10314,cat:1,name:’פנינים מצופים שוקולד לבן 2*3 ק”ג’},
-{id:10316,cat:1,name:‘פנינים מצופים שוקולד מריר חלבי 2*3 ק”ג’},
-{id:10268,cat:1,name:‘פרלין 56% לוז +44% סוכר (5 ק”ג)’},
-{id:10306,cat:1,name:‘פרלין שוקולד חלב 5 ק”ג’},
-{id:10308,cat:1,name:‘פרלין שוקולד לבן 5 ק”ג’},
-{id:10267,cat:1,name:‘פרליני איטלקי 50%’},
-{id:10065,cat:1,name:‘פתי בר וניל מוסדי 1.75 ק”ג’},
-{id:10057,cat:1,name:‘פתיבר וניל 5.5 ק”ג’},
-{id:10318,cat:1,name:’ציפוי מתקשה לבן חלבי 2*5 ק”ג’},
-{id:10321,cat:1,name:‘ציפוי מתקשה קקאו חלבי 2*5 ק”ג’},
-{id:10059,cat:1,name:‘צמקאו בלוק חום (5 ק”ג)’},
-{id:10039,cat:1,name:‘צמקאו מטבעות חום ללא סוכר (5 ק”ג)’},
-{id:10027,cat:1,name:“צמקאו צ’יפס ללא סוכר (5 ק"ג)”},
-{id:11110,cat:1,name:‘קליפות מסוכרות’},
-{id:10100,cat:1,name:‘קצפת צמחית גלידן (5 ק”ג)’},
-{id:10029,cat:1,name:‘קרם אוראו’},
-{id:11179,cat:1,name:‘קרם בטעם בייגלה (6 ק”ג)’},
-{id:10327,cat:1,name:‘קרם בייגלה מלוח חלק פרווה 5 ק”ג – בד”צ עד”ח’},
-{id:10328,cat:1,name:‘קרם מרשמלו 5 ק”ג פרווה – בד”צ עד”ח’},
-{id:10221,cat:1,name:‘קרם שוקולד מיוחד למילוי מאפינס’},
-{id:20086,cat:1,name:‘רוטב ויניגרט 4 ליטר’},
-{id:20082,cat:1,name:‘רוטב שום (4 ליטר)’},
-{id:11003,cat:1,name:‘ריבה בטעם תות 10 ק”ג’},
-{id:11002,cat:1,name:‘ריבה בטעם תות 13 ק”ג’},
-{id:11004,cat:1,name:‘ריבה צהובה (10 ק”ג)’},
-{id:11006,cat:1,name:‘ריבה תות שדה 22 ק”ג’},
-{id:11012,cat:1,name:‘ריבת חלב LITE’},
-{id:11046,cat:1,name:‘ריבת חלב פרווה טופי (13 ק”ג)’},
-{id:11010,cat:1,name:‘ריבת חלב קומידה (10 ק”ג)’},
-{id:11011,cat:1,name:‘ריבת חלב קונדיטור (5 ק”ג)’},
-{id:11017,cat:1,name:‘ריבת משמש צ.ט 13 ק”ג’},
-{id:11007,cat:1,name:‘ריבת תות שדה צ.ט – 13 ק”ג’},
-{id:30012,cat:1,name:‘שומן גלעיני דקל – מפיקס’},
-{id:30127,cat:1,name:‘שמן סויה בקוביה (1000 ליטר)’},
-{id:11150,cat:1,name:‘תמר כבוש פרימיום (25 ק”ג)’},
-
-// ===== שוקולדים (cat 2) =====
-{id:40811,cat:2,name:‘אבקת קקאו בארי קליבו EBONY – כהה’},
-{id:20054,cat:2,name:‘אגסים חצאים’},
-{id:20128,cat:2,name:‘אננס מיובש קוביות’},
-{id:20045,cat:2,name:‘אננס שלם’},
-{id:20051,cat:2,name:‘אפרסק חצאים’},
-{id:10047,cat:2,name:‘אצבעות צמקאו (8 ק”ג)’},
-{id:10052,cat:2,name:‘בצקולד (8 ק”ג)’},
-{id:20001,cat:2,name:‘זית טבעות ירוק בד”צ עדה חרדית’},
-{id:20003,cat:2,name:‘זיתי קלמטה מגולענים 15.5 ק”ג’},
-{id:20006,cat:2,name:‘זיתים XXL חרוזית (10 ק”ג)’},
-{id:20004,cat:2,name:‘זיתים XXL סורי מבוקעים (10 ק”ג)’},
-{id:20011,cat:2,name:‘זיתים XXL שלמים (10 ק”ג)’},
-{id:20002,cat:2,name:‘זיתים טבעות ירוק’},
-{id:20005,cat:2,name:‘זיתים טבעות שחור’},
-{id:20008,cat:2,name:‘חרוזית ירוק’},
-{id:20009,cat:2,name:‘חרוזית שחור’},
-{id:20039,cat:2,name:‘חריסה (רסק פלפל)’},
-{id:20025,cat:2,name:“טונה גדול לבנה פאוץ 1 ק"ג 12 יח’ בקרטון”},
-{id:20026,cat:2,name:‘טונה גדול שימורים – בד”צ עד”ח’},
-{id:10050,cat:2,name:“טיפות ציפס חום”},
-{id:10051,cat:2,name:“טיפות ציפס לבן”},
-{id:10056,cat:2,name:‘כפתורים בטעם שוקולד לבן פרווה 5 ק”ג’},
-{id:10035,cat:2,name:‘מזרה איטלקי תוצרת חוץ’},
-{id:10030,cat:2,name:‘מזרה חום’},
-{id:10038,cat:2,name:‘מזרה לבן’},
-{id:10033,cat:2,name:‘מזרה סוכריות ארוך תוצרת חוץ’},
-{id:10034,cat:2,name:‘מזרה צבעוני’},
-{id:10032,cat:2,name:“מזרה צבעוני כשל"פ”},
-{id:20010,cat:2,name:‘מיונז דלי הלמנס (4*3.44 ק”ג)’},
-{id:10023,cat:2,name:‘מיני מקופלת חום (5 ק”ג)’},
-{id:10024,cat:2,name:‘מיני מקופלת לבן (5 ק”ג)’},
-{id:40462,cat:2,name:‘מלבין 35 פרווה בד”צ’},
-{id:20007,cat:2,name:‘מלפפון במלח’},
-{id:10025,cat:2,name:‘מקופלת פצפוצים חום (10 ק”ג)’},
-{id:20129,cat:2,name:‘עגבניות מיובשות’},
-{id:30022,cat:2,name:‘עיסת קקאו (25 ק”ג)’},
-{id:10054,cat:2,name:‘פטה שוקולד גנש’},
-{id:20038,cat:2,name:‘פטריות חתוך מוסדי בד”צ עד”ח’},
-{id:20031,cat:2,name:“פטריות חתוכות קטן 400 גרם (24 יח’) – בד"צ”},
-{id:10007,cat:2,name:‘פניני שוקולד לבן (חלבי)’},
-{id:10060,cat:2,name:‘צמקאו בלוק לבן 3 ק”ג’},
-{id:10045,cat:2,name:“צמקאו מטבעות בטעם קפוצ’ינו”},
-{id:10042,cat:2,name:‘צמקאו מטבעות חום פרימיום’},
-{id:10046,cat:2,name:‘צמקאו מטבעות לבן פרימיום’},
-{id:40804,cat:2,name:‘קקאו בארי קליבו 20-22’},
-{id:20084,cat:2,name:‘רוטב אלף האיים (4 ליטר)’},
-{id:20083,cat:2,name:‘רוטב סויה’},
-{id:20032,cat:2,name:‘רוטב פיצה בד”צ 24 ק”ג’},
-{id:20030,cat:2,name:‘רוטב פיצה יכין’},
-{id:20088,cat:2,name:“רוטב צ’ילי מתוק”},
-{id:20028,cat:2,name:‘רסק עגבניות 28’},
-{id:20029,cat:2,name:‘רסק עגבניות 28BX (קטן)’},
-{id:10004,cat:2,name:‘רצועות שוקולד חלב’},
-{id:10003,cat:2,name:‘רצועות שוקולד מריר פרווה’},
-{id:10053,cat:2,name:‘שוקולד חלב CALLEBAUT’},
-{id:10043,cat:2,name:‘שוקולד חלב חתם סופר’},
-{id:10108,cat:2,name:’שוקולד חלב רבנות 12*1 ק”ג’},
-{id:10109,cat:2,name:‘שוקולד חלב רבנות 6*2.5 ק”ג’},
-{id:10044,cat:2,name:‘שוקולד לבן חתם סופר’},
-{id:10106,cat:2,name:’שוקולד לבן רבנות 12*1 ק”ג’},
-{id:10107,cat:2,name:‘שוקולד לבן רבנות 6*2.5 ק”ג’},
-{id:10001,cat:2,name:“שוקולד מריר 55% חת"ס”},
-{id:10058,cat:2,name:“שוקולד צ’יפס מריר 15000 (ת.הארץ)”},
-{id:10048,cat:2,name:“שוקולד צ’יפס מריר ללא סוכר”},
-{id:10055,cat:2,name:“שוקולד ציפס 15000 יח”},
-{id:20140,cat:2,name:‘שזיף מיובש אמריקאי (עם גרעין)’},
-
-// ===== שמן ומרגרינה (cat 3) =====
-{id:30134,cat:3,name:‘חמאת קוקוס (6 ק”ג)’},
-{id:30020,cat:3,name:‘חמאת קקאו בלוק (25 ק”ג)’},
-{id:30021,cat:3,name:‘חמאת קקאו מטבעות בדלי (3 ק”ג) – בד”צ עד”ח’},
-{id:30035,cat:3,name:‘מרגרינה לבצק עלים’},
-{id:30030,cat:3,name:‘מרגרינה לבצק שמרים (מחמאה)’},
-{id:30031,cat:3,name:‘מרגרינה מחמאה ירושלים’},
-{id:30036,cat:3,name:‘מרגרינה עלים (פייסטרי) קשה’},
-{id:30033,cat:3,name:‘מרגרינה רכה – פריך’},
-{id:30128,cat:3,name:‘פרופילן גליקול (215 ק”ג)’},
-{id:30129,cat:3,name:‘פרוקטוזה (סוכר פירות)’},
-{id:30013,cat:3,name:‘שומן צבס – 20 ק”ג’},
-{id:30016,cat:3,name:‘שומן קוקוס 26’},
-{id:30017,cat:3,name:‘שמן דקל נוזלי Palm Olein (16 ק”ג)’},
-{id:30103,cat:3,name:‘שמן זית 3.8 ליטר’},
-{id:30117,cat:3,name:“שמן חמניה 0.9 ליטר בד"צ עד"ח (15 יח’)”},
-{id:30113,cat:3,name:“שמן חמניה 1 ליטר (15 יח’)”},
-{id:30115,cat:3,name:‘שמן חמניה 16 ק”ג בד”צ עד”ח’},
-{id:30114,cat:3,name:‘שמן חמניה בקוביה (1000 ליטר)’},
-{id:30106,cat:3,name:‘שמן חמניות 5 ליטר’},
-{id:30107,cat:3,name:‘שמן לטיבול 4 ליטר’},
-{id:30122,cat:3,name:‘שמן לתבניות אדוליז’},
-{id:30100,cat:3,name:‘שמן סויה – 17.4 ליטר’},
-{id:30118,cat:3,name:‘שמן סויה 5 ליטר 1/4 – בד”צ עד”ח’},
-{id:30119,cat:3,name:‘שמן סויה מוסדי 16 ק”ג – בד”צ’},
-{id:30121,cat:3,name:‘שמן פרפין 1000 ליטר בקוביה’},
-{id:30120,cat:3,name:‘שמן פרפין 18 ליטר’},
-{id:30112,cat:3,name:‘שמן קוקוס אורגני (קוביה) 920 ק”ג’},
-{id:30116,cat:3,name:‘שמן קנולה – בקבוק 10 ליטר’},
-{id:30101,cat:3,name:‘שמן קנולה 5 ליטר’},
-{id:30108,cat:3,name:‘שמן קנולה בד”צ עד”ח (16 ק”ג)’},
-{id:30105,cat:3,name:‘שמן קנולה ליטר’},
-{id:30109,cat:3,name:“שמן קנולה קוביה (1000 ל’)”},
-
-// ===== תמציות ותבלינים (cat 4) =====
-{id:40410,cat:4,name:‘אבקת אפיה (1 ק”ג)’},
-{id:40408,cat:4,name:‘אבקת חלב תוצרת חוץ’},
-{id:40458,cat:4,name:‘אבקת מאפנס ללא סוכר (15 ק”ג)’},
-{id:40454,cat:4,name:‘אבקת מאפנס תפוז – כהן (15 ק”ג)’},
-{id:40316,cat:4,name:‘אבקת מרק פטריות 1 ק”ג’},
-{id:40424,cat:4,name:‘אבקת סוכר אשבל 1 ק”ג’},
-{id:40423,cat:4,name:‘אבקת סוכר ברמן – 10 ק”ג’},
-{id:40412,cat:4,name:‘אבקת סוכר גלעם’},
-{id:40414,cat:4,name:‘אבקת סוכר לא נמסה תוצרת חוץ’},
-{id:40435,cat:4,name:‘אבקת סוכר תוצרת חוץ – 25 ק”ג’},
-{id:40820,cat:4,name:“אבקת קקאו ארוז 0.5 ק"ג (12 יח’)”},
-{id:40810,cat:4,name:‘אבקת קקאו טבעית T-3’},
-{id:40482,cat:4,name:‘אבקת קרם פטיסייר (20 ק”ג)’},
-{id:40812,cat:4,name:‘אבקת שוקולד’},
-{id:40419,cat:4,name:‘אגוז מוסקט טחון’},
-{id:40472,cat:4,name:‘אגר אגר’},
-{id:40480,cat:4,name:‘אובלט – בד”צ עד”ח’},
-{id:40478,cat:4,name:‘אוסם פודינג אינסטנט וניל 6*1 ק”ג’},
-{id:40464,cat:4,name:‘אייס בטעם וניל עוגיות 1 ק”ג’},
-{id:40461,cat:4,name:‘אייס בננה 1 ק”ג’},
-{id:40468,cat:4,name:‘אייס וניל’},
-{id:40469,cat:4,name:‘אייס פסיפלורה 1 ק”ג’},
-{id:40466,cat:4,name:‘אייס קפה’},
-{id:40463,cat:4,name:‘אייס קפה לייט 1 ק”ג’},
-{id:40483,cat:4,name:‘אינסטנט פודינג לבן י.כהן (10 ק”ג)’},
-{id:40496,cat:4,name:‘אינסטנט פודינג ללא סוכר – י.כהן’},
-{id:40409,cat:4,name:‘אלבומין’},
-{id:20087,cat:4,name:“אלף האיים הלמנס מנות 900 יח’”},
-{id:40436,cat:4,name:‘אסאסולפאם K’},
-{id:40434,cat:4,name:‘אצסולפם K’},
-{id:40440,cat:4,name:‘אריטריטול אבקה – 25 ק”ג’},
-{id:40411,cat:4,name:‘אתיל ונילין 25 ק”ג’},
-{id:40474,cat:4,name:‘ג'לטין OK’},
-{id:40473,cat:4,name:‘ג'לטין דגים (25 ק”ג) LAPI’},
-{id:40417,cat:4,name:‘ג'לטין דגים בד”צ עד”ח בשק (25 ק”ג)’},
-{id:40476,cat:4,name:‘ג'לטין דגים בד”צ עד”ח 1 ק”ג (12 ק”ג)’},
-{id:40477,cat:4,name:‘ג'לטין דגים מהדרין כחול’},
-{id:40471,cat:4,name:‘ג'לטין (תפזורת) – כשר’},
-{id:40494,cat:4,name:‘ג'לי תות’},
-{id:40526,cat:4,name:‘גלוטן חיטה (רוקט) – 25 ק”ג’},
-{id:40525,cat:4,name:‘גלוטן מחזק קמח’},
-{id:40493,cat:4,name:‘דבש 1 ק”ג’},
-{id:40456,cat:4,name:‘דבש דבורים טהור (25 ק”ג)’},
-{id:40457,cat:4,name:‘דבש טהור 5 ק”ג’},
-{id:40401,cat:4,name:‘דקסטרוזה’},
-{id:40335,cat:4,name:‘זנגויל טחון’},
-{id:40302,cat:4,name:‘זרעי כוסברה שלם 25 ק”ג’},
-{id:20090,cat:4,name:‘חומץ 4 ליטר’},
-{id:40416,cat:4,name:‘חלבון מי גבינה (25 ק”ג)’},
-{id:20093,cat:4,name:‘טחינה גולמית’},
-{id:40334,cat:4,name:‘טימין’},
-{id:40318,cat:4,name:‘כוסברה טחון’},
-{id:40315,cat:4,name:‘כוסברה שלם’},
-{id:40425,cat:4,name:‘כמו סוכר’},
-{id:20091,cat:4,name:‘לימון משומר’},
-{id:42117,cat:4,name:‘לציטין סויה (1000 ק”ג)’},
-{id:40515,cat:4,name:‘לתת בהיר’},
-{id:40520,cat:4,name:‘לתת כהה’},
-{id:40451,cat:4,name:‘מאפינס וניל – קרטון 15 ק”ג’},
-{id:40453,cat:4,name:‘מאפינס שוקולד – קרטון 15 ק”ג’},
-{id:40467,cat:4,name:‘מאפינס תפוז – קרטון 15 ק”ג’},
-{id:40690,cat:4,name:‘מלח בשק’},
-{id:40691,cat:4,name:‘מלח גביש A גס בשק (25 ק”ג)’},
-{id:40694,cat:4,name:‘מלח חבילות גס’},
-{id:40695,cat:4,name:‘מלח חבילות גס 25 ק”ג’},
-{id:40692,cat:4,name:‘מלח חבילות דק’},
-{id:40693,cat:4,name:‘מלח טבליות (25 ק”ג)’},
-{id:40415,cat:4,name:‘מלח לימון’},
-{id:40431,cat:4,name:‘מלטודקסטרין (25 ק”ג)’},
-{id:40420,cat:4,name:‘מלטיטול אבקה בד”צ עד”ח’},
-{id:40438,cat:4,name:‘מלטיטול נוזלי 75% – קוביה 1300 ק”ג’},
-{id:40427,cat:4,name:‘מלטיטול נוזלי (חבית 275 ק”ג)’},
-{id:40422,cat:4,name:‘מלטיטול רוקט’},
-{id:40310,cat:4,name:‘מקלות קינמון 8 ס”מ’},
-{id:40327,cat:4,name:‘מרק בטעם עוף’},
-{id:40516,cat:4,name:‘משפר אפיה פיתה פלוס’},
-{id:40510,cat:4,name:‘משפר טופ 2’},
-{id:40808,cat:4,name:‘ניבס פולי קקאו גרוס’},
-{id:40608,cat:4,name:‘סובין בשק 25 ק”ג’},
-{id:40421,cat:4,name:‘סודה לשתיה (1 ק”ג)’},
-{id:40405,cat:4,name:‘סודה לשתיה (25 ק”ג)’},
-{id:40666,cat:4,name:‘סוכר אינוורטי (5 ק”ג)’},
-{id:40660,cat:4,name:‘סוכר בשק’},
-{id:40667,cat:4,name:‘סוכר בשק 50 ק”ג’},
-{id:40670,cat:4,name:‘סוכר גבישי’},
-{id:40413,cat:4,name:‘סוכר וניל’},
-{id:40426,cat:4,name:‘סוכר וניל (10 ק”ג) – גלעם’},
-{id:40662,cat:4,name:‘סוכר חבילות’},
-{id:40664,cat:4,name:‘סוכר חום דמררה (25 ק”ג)’},
-{id:40665,cat:4,name:‘סוכר חום כהה 25 ק”ג’},
-{id:40486,cat:4,name:“סוכר חום מנות דמררה (1000 יח’)”},
-{id:40484,cat:4,name:“סוכר לבן מנות (1000 יח’)”},
-{id:40663,cat:4,name:‘סוכר קנים אורגני (25 ק”ג)’},
-{id:40668,cat:4,name:‘סוכר (באלה) 1.2 טון’},
-{id:40488,cat:4,name:“סוכרזית מנות (1000 יח’)”},
-{id:40669,cat:4,name:‘סוכרלוז 10 ק”ג’},
-{id:40613,cat:4,name:‘סולת בוואקום (25 ק”ג)’},
-{id:42119,cat:4,name:‘סומק (1 ק”ג)’},
-{id:40433,cat:4,name:‘סורביטול אבקה (20 ק”ג)’},
-{id:40475,cat:4,name:‘סחלב אינסטנט 1 ק”ג’},
-{id:40402,cat:4,name:‘עמילן טפיוקה’},
-{id:40406,cat:4,name:‘עמילן קבוקים CH10’},
-{id:40479,cat:4,name:‘פודינג וניל לבן גלעם’},
-{id:40610,cat:4,name:‘פוטסיום סורבט (25 ק”ג)’},
-{id:42121,cat:4,name:‘פלפל אנגלי טחון’},
-{id:40418,cat:4,name:“פלפל צ’לי גרוס 2 גרם מנות (1000 יח’)”},
-{id:40404,cat:4,name:‘פרג טורקי שלם (1 ק”ג)’},
-{id:40403,cat:4,name:‘קורנפלור (1 ק”ג)’},
-{id:40324,cat:4,name:‘קימל טחון’},
-{id:40321,cat:4,name:‘קימל שלם’},
-{id:40407,cat:4,name:‘קלציום פרופיונט (20 ק”ג)’},
-{id:40430,cat:4,name:‘קמח / עמילן תפוח אדמה’},
-{id:40612,cat:4,name:‘קמח אורז’},
-{id:40600,cat:4,name:‘קמח בשק’},
-{id:40602,cat:4,name:‘קמח חבילות’},
-{id:40606,cat:4,name:‘קמח חיטה לבן מנופה (10 ק”ג)’},
-{id:40615,cat:4,name:‘קמח כוסמת ירוקה’},
-{id:40601,cat:4,name:‘קמח לחם שטיבל (25 ק”ג)’},
-{id:40614,cat:4,name:‘קמח מלא בוואקום – 25 ק”ג’},
-{id:40609,cat:4,name:‘קמח מנופה בוואקום (25 ק”ג)’},
-{id:40611,cat:4,name:‘קמח מצה לעוגות’},
-{id:40465,cat:4,name:‘קמח נטול גלוטן’},
-{id:40607,cat:4,name:‘קמח קוקוס אורגני בד”צ כשל”פ (15 ק”ג)’},
-{id:40616,cat:4,name:‘קמח שיפון מלא’},
-{id:40604,cat:4,name:‘קמח תירס עבה (25 ק”ג)’},
-{id:40439,cat:4,name:‘קסנטאן גאם’},
-{id:40491,cat:4,name:‘קפה נמס בדלי 4 ק”ג’},
-{id:40495,cat:4,name:‘קפה נמס מגורען “רד מאג”’},
-{id:40490,cat:4,name:‘קפה נמס קונגו ארוז 20 ק”ג’},
-{id:40498,cat:4,name:‘קפה שחור עלית (אורגינל) 1 ק”ג’},
-{id:40492,cat:4,name:‘קפה שחור עלית (מוסדי) 1 ק”ג’},
-{id:40809,cat:4,name:‘קקאו 10/12 כהה בד”צ עד”ח ABE-10’},
-{id:40807,cat:4,name:‘קקאו דה זאן D11DL’},
-{id:40801,cat:4,name:‘קקאו דזאן D-11B’},
-{id:40802,cat:4,name:‘קקאו דזאן D-11S’},
-{id:40803,cat:4,name:‘קקאו דזאן D11-SB’},
-{id:40800,cat:4,name:‘קקאו דזאן DL-21’},
-{id:40487,cat:4,name:‘קרם פטיסייר – 13 ק”ג’},
-{id:40513,cat:4,name:‘קרמל נוזלי (30 ק”ג)’},
-{id:40031,cat:4,name:“רכז רימונים (700 גרם) – 12 יח’”},
-{id:40437,cat:4,name:‘שאטה גרוסה חריף – 10 ק”ג’},
-{id:40307,cat:4,name:‘שום גבישי דק’},
-{id:40489,cat:4,name:“שוקוצ’ינו (10 ק"ג)”},
-{id:40506,cat:4,name:‘שמרים 10 ק”ג ויקטוריה בורגמן בד”צ’},
-{id:40503,cat:4,name:‘שמרים טריים (10 ק”ג)’},
-{id:40502,cat:4,name:‘שמרים יבשים D.C.L בד”צ’},
-{id:40500,cat:4,name:‘שמרים יבשים בורגמן 10 ק”ג’},
-{id:40505,cat:4,name:‘שמרים יבשים גלוריפאן’},
-{id:40319,cat:4,name:‘תבלין אורגנו’},
-{id:40333,cat:4,name:‘תבלין אניס’},
-{id:40322,cat:4,name:‘תבלין בזיליקום’},
-{id:40332,cat:4,name:‘תבלין זעתר’},
-{id:40320,cat:4,name:‘תבלין כורכום’},
-{id:40323,cat:4,name:‘תבלין כמון’},
-{id:40328,cat:4,name:‘תבלין פיצה בק”ג’},
-{id:40329,cat:4,name:‘תבלין פיצה מנות’},
-{id:40306,cat:4,name:‘תבלין פלפל לבן’},
-{id:40303,cat:4,name:‘תבלין פלפל שחור’},
-{id:40312,cat:4,name:‘תבלין פפריקה חריפה’},
-{id:40309,cat:4,name:‘תבלין פפריקה מתוקה’},
-{id:42118,cat:4,name:‘תבלין ציפורן’},
-{id:40300,cat:4,name:‘תבלין קינמון’},
-{id:40330,cat:4,name:‘תבלין קצח’},
-{id:40429,cat:4,name:‘תבלין רוזמרין 1 ק”ג’},
-{id:40301,cat:4,name:‘תבלין שום’},
-{id:40038,cat:4,name:‘תמצית אגוזים’},
-{id:40022,cat:4,name:‘תמצית דבש’},
-{id:40010,cat:4,name:‘תמצית וניל – סנס ארומה’},
-{id:40020,cat:4,name:‘תמצית חמאה’},
-{id:40012,cat:4,name:‘תמצית לימון – סנס ארומה’},
-{id:40011,cat:4,name:‘תמצית מי ורדים’},
-{id:40026,cat:4,name:‘תמצית פיסטוק’},
-{id:40014,cat:4,name:‘תמצית רום – סנס ארומה’},
-{id:40018,cat:4,name:“תמצית רום ג’מייקה”},
-{id:40030,cat:4,name:‘תמצית שוקולד’},
-{id:40036,cat:4,name:‘תמצית שקדים’},
-{id:40016,cat:4,name:‘תמצית תפוז’},
-
-// ===== קטניות פירות ואגוזים (cat 5+9) =====
-{id:50221,cat:5,name:‘אגוז מלך גרוס’},
-{id:50274,cat:5,name:‘אגוז מלך טחון’},
-{id:50236,cat:5,name:‘אגוז מלך לב 10 ק”ג 80%’},
-{id:50259,cat:5,name:‘אגוז מלך שבור מדיום’},
-{id:50234,cat:5,name:‘אגוזי מלך קליפורניה (11.35 ק”ג)’},
-{id:50030,cat:5,name:‘אורז בסמטי מעולה ארוך (4*5 ק”ג) XXL 1121’},
-{id:50018,cat:5,name:‘אורז תפוח 500 גרם בשקית’},
-{id:20117,cat:5,name:‘אננס טבעי – 10 ק”ג’},
-{id:50232,cat:5,name:‘בוטנים ג14’},
-{id:50228,cat:5,name:‘בוטנים גרוס קלוי (25 ק”ג)’},
-{id:50218,cat:5,name:‘בוטנים חצאים’},
-{id:50220,cat:5,name:‘בוטנים חצאים מולבנים 25 ק”ג’},
-{id:50222,cat:5,name:‘בוטנים מולבנים מקלות 25 ק”ג’},
-{id:50039,cat:5,name:‘בוטנים שלם 50/60’},
-{id:50036,cat:5,name:‘בורגול דק’},
-{id:50035,cat:5,name:‘בורגול עבה’},
-{id:20153,cat:5,name:‘בננה מיובשת טבעית – 10 ק”ג’},
-{id:50033,cat:5,name:‘בננה צ'יפס (8 ק”ג)’},
-{id:50105,cat:5,name:‘בצל מטוגן בפאוץ 20 ק”ג בד”צ’},
-{id:20132,cat:5,name:‘ג'ינג'ר (זנגויל) דל סוכר – 20 ק”ג’},
-{id:50026,cat:5,name:‘גרעיני דלעת קלוף – 25 ק”ג’},
-{id:50021,cat:5,name:‘גרעיני חמניה מקולף (5 ק”ג)’},
-{id:50024,cat:5,name:‘גרעיני חמניות קלופות’},
-{id:20145,cat:5,name:‘היבסקוס מיובש – 10 ק”ג’},
-{id:50013,cat:5,name:‘זרעי ציה’},
-{id:50104,cat:5,name:‘חומוס (25 ק”ג)’},
-{id:20151,cat:5,name:‘חטיף אגוזים ואורז קוקוס – 6 ק”ג’},
-{id:20149,cat:5,name:‘חטיף אגוזים ואורז קינמון – 8 ק”ג’},
-{id:20150,cat:5,name:‘חטיף אגוזים ואורז קרמל – 8 ק”ג’},
-{id:50111,cat:5,name:‘חלבון סויה רצועות שניצל 50% (10 ק”ג)’},
-{id:50263,cat:5,name:‘חמאת לוז (30 ק”ג)’},
-{id:20116,cat:5,name:‘חמוציות אמריקאיות פרימיום’},
-{id:20124,cat:5,name:‘חמוציות ברכז תפוחים (11.35 ק”ג)’},
-{id:20141,cat:5,name:‘חמוציות חתוכות 4.5 ק”ג’},
-{id:20134,cat:5,name:‘חמוציות שלמות ברכז תפוחים’},
-{id:50019,cat:5,name:‘כוסמת (25 ק”ג)’},
-{id:50227,cat:9,name:‘לוז גרוס בוואקום עד”ח 2-4’},
-{id:50114,cat:5,name:‘לוז טבעי 9/11 בד”צ עד”ח’},
-{id:50225,cat:5,name:‘לוז טבעי חצאים (שבור)’},
-{id:50261,cat:5,name:‘לוז טבעי שלם 11/13 עד”ח’},
-{id:50262,cat:5,name:‘לוז טבעי שלם 14/16 עד”ח’},
-{id:50249,cat:5,name:‘לוז מולבן גרוס 1-3 (10 ק”ג)’},
-{id:50229,cat:9,name:‘לוז מולבן שלם עד”ח’},
-{id:20142,cat:5,name:‘ליים מיובש פרוס – 10 ק”ג’},
-{id:50267,cat:5,name:‘מחית וניל 1345’},
-{id:20111,cat:5,name:‘מנגו דל סוכר – 20 ק”ג’},
-{id:20112,cat:5,name:‘מנגו קוביות 5 מ”מ’},
-{id:50260,cat:5,name:‘מקלות וניל (250 גרם)’},
-{id:20110,cat:5,name:‘משמש טבעי (10 ק”ג)’},
-{id:20118,cat:5,name:‘משמש מיובש מס' 1’},
-{id:50247,cat:5,name:‘משמש קוביות (10 ק”ג)’},
-{id:20133,cat:5,name:‘עגבניות מיובשות קוביות (10 ק”ג)’},
-{id:20144,cat:5,name:‘פומלה מיובשת (ירוקה) – 16 ק”ג’},
-{id:20143,cat:5,name:‘פומלה מיובשת (לבנה) – 16 ק”ג’},
-{id:20037,cat:5,name:“פטריות בפאוץ’ חתוכות (4*2.4 ק"ג)”},
-{id:50238,cat:5,name:‘פיסטוק בקליפה 18-22’},
-{id:50273,cat:5,name:‘פיסטוק גרוס’},
-{id:50266,cat:5,name:‘פיסטוק חצאים EXTRA GREEN 10’},
-{id:50252,cat:5,name:‘פיסטוק טחון’},
-{id:50241,cat:5,name:‘פיסטוק מקולף חצאים (10 ק”ג)’},
-{id:50246,cat:5,name:‘פיסטוק מקולף חצאים (13.65 ק”ג)’},
-{id:50237,cat:5,name:‘פיסטוק מקולף חצאים (1 ק”ג)’},
-{id:50239,cat:9,name:‘פיסטוק מקולף שלם (10 ק”ג)’},
-{id:20130,cat:5,name:‘פפיה מיובשת קוביות’},
-{id:50012,cat:5,name:“פצפוצי אורז ללא תוספת סוכר (15*375 גר’)”},
-{id:50245,cat:5,name:‘פקאן טבעי גרוס 3-5’},
-{id:50240,cat:9,name:‘פקאן טבעי שלם מאמוט’},
-{id:50242,cat:5,name:‘פקאן סיני (מסוכר)’},
-{id:50253,cat:5,name:‘פקאן סיני שבור’},
-{id:50244,cat:9,name:‘פקאן רבעים (13.65 ק”ג) SIZE 27’},
-{id:50028,cat:5,name:‘פרג שלם כחול בד”צ (25 ק”ג)’},
-{id:50020,cat:5,name:‘פשתן זרעי פשתן מנופה’},
-{id:50107,cat:5,name:‘פתיתי חלבון סויה 50% – פתיתים 1-4 (15 ק”ג)’},
-{id:20114,cat:5,name:‘צימוק אוכמניה’},
-{id:20119,cat:5,name:‘צימוק אמריקאי חום’},
-{id:20122,cat:5,name:‘צימוק אמריקאי לבן (13.65 ק”ג)’},
-{id:20137,cat:5,name:‘צימוק אמריקאי לבן (12.5 ק”ג)’},
-{id:20138,cat:5,name:‘צימוק אמריקאי לבן ג'מבו (13.65 ק”ג)’},
-{id:20123,cat:5,name:‘צימוק כהה (10 ק”ג)’},
-{id:20121,cat:5,name:‘צימוק סולטנה (12.5 ק”ג)’},
-{id:50031,cat:5,name:‘ציפוי דגנים’},
-{id:50233,cat:5,name:‘צנובר סיני 950 25 ק”ג’},
-{id:50268,cat:5,name:‘קוביות הדרים תפוז טבעי (10 ק”ג)’},
-{id:50271,cat:5,name:‘קוביות קליפות תפוז צבעוני 10 ק”ג’},
-{id:50272,cat:5,name:‘קוקוס טחון פיליפיני 45.4 ק”ג’},
-{id:50254,cat:5,name:‘קוקוס טחון (25 ק”ג)’},
-{id:50258,cat:5,name:‘קוקוס לבן ללא סולפיטים (25 ק”ג)’},
-{id:50248,cat:5,name:‘קוקוס לבן פיליפיני (22.7 ק”ג)’},
-{id:50251,cat:5,name:‘קוקוס ממותק אטריות (22.7 ק”ג)’},
-{id:20152,cat:5,name:‘קוקוס קלוי טבעי ארוז – 4 ק”ג’},
-{id:50250,cat:5,name:‘קוקוס קלוי קראנץ (22.7 ק”ג)’},
-{id:40400,cat:5,name:‘קורנפלור (25 ק”ג)’},
-{id:50016,cat:5,name:‘קינואה לבנה (25 ק”ג)’},
-{id:20148,cat:5,name:‘קלמנטינה מיובשת – 10 ק”ג’},
-{id:50109,cat:5,name:‘קמח סויה FOOD GRADE בד”צ’},
-{id:40603,cat:5,name:‘קמח תירס דק’},
-{id:50226,cat:5,name:‘קרוקנט אגוזי לוז’},
-{id:50224,cat:5,name:‘קרוקנט בוטנים’},
-{id:50270,cat:5,name:‘קשיו 160’},
-{id:50280,cat:5,name:‘קשיו 180 WW בפח’},
-{id:50211,cat:5,name:‘קשיו SP’},
-{id:50214,cat:5,name:‘קשיו גרוס טבעי BB’},
-{id:50213,cat:5,name:‘קשיו חצאים (10 ק”ג) LP’},
-{id:50212,cat:5,name:‘קשיו חצאים LP’},
-{id:50231,cat:9,name:‘קשיו טבעי WW180 בוואקום’},
-{id:50235,cat:9,name:‘קשיו טבעי שלם 240 (22.7 ק”ג)’},
-{id:50210,cat:5,name:‘קשיו שלם 320’},
-{id:50264,cat:5,name:‘קשיוקו 180’},
-{id:50255,cat:5,name:‘רצועות קוקוס מיובש (10 ק”ג)’},
-{id:50102,cat:5,name:‘שבבי בצל WHITE בד”צ’},
-{id:50113,cat:5,name:‘שבבי תפוח אדמה (20 ק”ג) – בד”צ עד”ח’},
-{id:50010,cat:5,name:‘שומשום EXTRA’},
-{id:50011,cat:5,name:‘שומשום לבן (5 ק”ג)’},
-{id:50015,cat:5,name:‘שומשום מלא (25 ק”ג)’},
-{id:50014,cat:5,name:‘שומשום שחור’},
-{id:50034,cat:5,name:‘שיבולת שועל דקה (20 ק”ג)’},
-{id:50025,cat:5,name:‘שיבולת שועל ללא גלוטן’},
-{id:50029,cat:5,name:‘שיבולת שועל עבה קווקר (20 ק”ג)’},
-{id:50022,cat:5,name:‘שיבולת שועל עבה (25 ק”ג)’},
-{id:50038,cat:5,name:‘שמרי בירה אבקה’},
-{id:50037,cat:5,name:‘שמרי בירה שבבים’},
-{id:50216,cat:5,name:‘שקד בינוני שבור 20 ק”ג’},
-{id:50256,cat:5,name:‘שקד חסן אקסטרה בד”צ עד”ח’},
-{id:50200,cat:9,name:‘שקד טבעי אמריקאי’},
-{id:50203,cat:9,name:‘שקד טבעי אמריקאי קטן’},
-{id:50257,cat:5,name:‘שקד טבעי טחון (11.35 ק”ג)’},
-{id:50205,cat:5,name:‘שקד טבעי ישראלי בינוני (20 ק”ג)’},
-{id:50207,cat:5,name:‘שקד טחון מולבן אמריקאי בד”צ (11.35 ק”ג)’},
-{id:50223,cat:5,name:‘שקד מולבן גפרור/מקלות (10 ק”ג)’},
-{id:50032,cat:5,name:‘שקד מולבן גרוס אמריקאי (11.35 ק”ג)’},
-{id:50269,cat:5,name:‘שקד מולבן חצאים (10 ק”ג)’},
-{id:50219,cat:9,name:‘שקד מולבן חצאים (11.35 ק”ג)’},
-{id:50204,cat:5,name:‘שקד מולבן טחון מנולט (11.35 ק”ג)’},
-{id:50206,cat:5,name:‘שקד מולבן טחון ספרדי (10 ק”ג)’},
-{id:50208,cat:9,name:‘שקד מולבן מקלות/גפרורים (11.35 ק”ג)’},
-{id:50217,cat:5,name:‘שקד מולבן פרוס (10 ק”ג)’},
-{id:50209,cat:9,name:‘שקד מולבן פרוס אמריקאי’},
-{id:50243,cat:5,name:‘שקד מולבן פרוס (1 ק”ג)’},
-{id:50202,cat:9,name:‘שקד מולבן שלם’},
-{id:50265,cat:5,name:‘שקד מולבן שלם (10 ק”ג)’},
-{id:50215,cat:5,name:‘שקד קלוי גרוס’},
-{id:50201,cat:9,name:‘שקדים טבעי חצאים 25 ק”ג’},
-{id:20125,cat:5,name:‘תאנים מיובשות’},
-{id:20115,cat:5,name:‘תות שדה קוביות 5 מ”מ’},
-{id:20033,cat:5,name:‘תירס גרעינים’},
-{id:20035,cat:5,name:‘תירס גרעינים קטן’},
-{id:20154,cat:5,name:‘תפוז מיובש טבעי (5 ק”ג)’},
-{id:20147,cat:5,name:‘תפוז מיובש פרוס – 10 ק”ג’},
-{id:40013,cat:5,name:‘תפוז סיני’},
-{id:50230,cat:5,name:‘תפוח עץ טבעות 10 ק”ג’},
-
-// ===== עזרי אפייה (cat 8) =====
-{id:80051,cat:8,name:‘כפפות לטקס L/XL’},
-{id:80037,cat:8,name:“מגש קרטון 20 זהב דו צדדי (250 יח’)”},
-{id:80038,cat:8,name:“מגש קרטון אינגליש קייק (385 יח’)”},
-{id:80104,cat:8,name:“נייר אפיה 60/60 (1000 יח’)”},
-{id:80106,cat:8,name:“נייר אפיה 60/80 (500 יח’)”},
-{id:80102,cat:8,name:“נייר אפיה סיליקון 50/70 (1000 יח’)”},
-{id:80107,cat:8,name:“נייר אפייה 30/30 (1000 יחידות)”},
-{id:80101,cat:8,name:“נייר אפייה 40/70 לבן בד"צ 1000 יח’”},
-{id:80105,cat:8,name:“נייר אפייה לבן 50/80 בד"צ – 500 יח’”},
-{id:80103,cat:8,name:“נייר אפייה סיליקון חום 40*60 (1000 יח’)”},
-{id:80100,cat:8,name:“נייר אפייה סיליקון לבן 40/60 1000 יח”},
-{id:80108,cat:8,name:“נייר אפייה סיליקון לבן 57/70 1000 יח”},
-{id:80021,cat:8,name:‘נייר ניגוב 6/1’},
-{id:80020,cat:8,name:‘נייר ניגוב ידיים תעשייתי’},
-{id:80018,cat:8,name:‘סינרים ח”פ גדול 100 יחידות’},
-{id:80033,cat:8,name:‘צלחת טורט זהב 24 100 יח’},
-{id:80032,cat:8,name:“צלחת כסף 4 בינוני 100 יח’ 24 קוטר”},
-{id:80034,cat:8,name:“צלחת כסף 5 גדול 100 יח’ 29 קוטר”},
-{id:80040,cat:8,name:“קופסא בורקס 1.5 ק"ג לבן (100 יח’)”},
-{id:80041,cat:8,name:“קופסא מעוצבת 1.5 ק"ג (150 יח’)”},
-{id:80024,cat:8,name:‘קרטון 1.5 ק”ג לבן (100 יח”)’},
-{id:80022,cat:8,name:‘קרטון בורקס 1.5 ק”ג חום (150 יח”)’},
-{id:80010,cat:8,name:‘שק זילוף בד גדול’},
-{id:80012,cat:8,name:‘שק זילוף בד קטן’},
-{id:80014,cat:8,name:‘שק זילוף חד פעמי (גדול)’},
-{id:80016,cat:8,name:‘שק זילוף חד פעמי (קטן)’},
-{id:80036,cat:8,name:“תבנית אינגליש קייק 55 (1000 יח’)”},
-{id:80035,cat:8,name:“תחתית זהב/כסף 28 קוטר ס"מ (5/50)”},
-{id:80031,cat:8,name:‘תחתית לטורט זהב/כסף קוטר 24 ס”מ (5/50)’},
+var PRODUCTS = [
+  {id:40459,cat:1,name:'איזומלט (20 ק"ג)'},
+  {id:10325,cat:1,name:'אצבעות שוקולד חלב 8 ס"מ'},
+  {id:11176,cat:1,name:'בייגלה טחון 10 ק"ג'},
+  {id:10320,cat:1,name:'בייגלה מצופה שוקולד חלב'},
+  {id:10319,cat:1,name:"בייגלה מצופה שוקולד לבן 8*500 גר'"},
+  {id:11177,cat:1,name:'ביסקוויט טחון קרמל 10 ק"ג'},
+  {id:10063,cat:1,name:'ביסקויט בטעם קרמל (לוטוס) 4 ק"ג'},
+  {id:10061,cat:1,name:'ביסקויט פתיבר וניל טחון 5 ק"ג'},
+  {id:10031,cat:1,name:'ביסקויט קרמבו שחור 4 ק"ג'},
+  {id:10068,cat:1,name:'ביסקויט קרמל טחון 5 ק"ג'},
+  {id:10069,cat:1,name:'ביסקויט שחור טחון 5 ק"ג'},
+  {id:10233,cat:1,name:'בלוק חלבה 3 ק"ג'},
+  {id:11015,cat:1,name:'גלוקוזה בדלי'},
+  {id:10231,cat:1,name:'גלזורה שקופה (13 ק"ג)'},
+  {id:10066,cat:1,name:'גליליות ארוך (130 יחידות)'},
+  {id:10064,cat:1,name:'גליליות קצר (290 יחידות)'},
+  {id:11109,cat:1,name:'דובדבן אמרנה 5 ק"ג'},
+  {id:11108,cat:1,name:'דובדבן בסירופ'},
+  {id:11105,cat:1,name:'דובדבן מסוכר יבש (10 ק"ג)'},
+  {id:11014,cat:1,name:'חלב מרוכז (10 ק"ג)'},
+  {id:10287,cat:1,name:'חמאה (25 ק"ג) מהדרין'},
+  {id:10286,cat:1,name:'חמאת בוטנים – חבית (230 ק"ג)'},
+  {id:10284,cat:1,name:'חמאת בוטנים 100% (5 ק"ג)'},
+  {id:10272,cat:1,name:'חמאת לוז 100% (5 ק"ג)'},
+  {id:10282,cat:1,name:'חמאת פיסטוק ירוק 100% (5 ק"ג)'},
+  {id:10281,cat:1,name:'חמאת קשיו 100%'},
+  {id:10280,cat:1,name:'חמאת שקדים (18 ק"ג)'},
+  {id:10285,cat:1,name:'חמאת שקדים (5 ק"ג)'},
+  {id:10311,cat:1,name:'כפתורים שוקולד חלב חלבי 5 ק"ג'},
+  {id:10310,cat:1,name:'כפתורים שוקולד מריר 52% פרווה 10 ק"ג'},
+  {id:10307,cat:1,name:'מטבעות שוקולד לבן חלבי 5 ק"ג'},
+  {id:20080,cat:1,name:'מיונז אמיתי (5 ק"ג)'},
+  {id:11066,cat:1,name:'מילוי בטעם תות שדה 22 ק"ג'},
+  {id:10041,cat:1,name:'מיני עדשים (6 ק"ג)'},
+  {id:10322,cat:1,name:'מיני קורנפלקס מצופה שוקולד חלב 2*3 ק"ג'},
+  {id:10323,cat:1,name:'מיני קורנפלקס מצופה שוקולד לבן 2*3 ק"ג'},
+  {id:11020,cat:1,name:'מלית אוכמניות (13 ק"ג)'},
+  {id:11042,cat:1,name:'מלית בטעם וניל (13 ק"ג)'},
+  {id:11030,cat:1,name:'מלית דובדבן (13 ק"ג)'},
+  {id:11041,cat:1,name:'מלית פרג 22 ק"ג'},
+  {id:11040,cat:1,name:'מלית פרג (13 ק"ג)'},
+  {id:10283,cat:1,name:'מלית שקדים 13 ק"ג'},
+  {id:11095,cat:1,name:'מלית תפוח עץ ללא סוכר (10 ק"ג)'},
+  {id:11036,cat:1,name:'מלית תפוח עץ קוביות (17 ק"ג)'},
+  {id:40032,cat:1,name:'מלית תפוח עץ פרימיום 5.5 ק"ג'},
+  {id:10254,cat:1,name:'ממרח אגוזי לוז רוזמרי (6 ק"ג)'},
+  {id:10289,cat:1,name:'ממרח אגוזים 50% עם קוקוס'},
+  {id:11182,cat:1,name:'ממרח בטעם פיסטוק 22 ק"ג'},
+  {id:11183,cat:1,name:'ממרח בטעם פיסטוק 6 ק"ג'},
+  {id:10224,cat:1,name:'ממרח בטעם שוקולד איטלקי (22 ק"ג)'},
+  {id:10225,cat:1,name:'ממרח בטעם שוקולד בהיר לאפייה'},
+  {id:10228,cat:1,name:'ממרח בטעם שוקולד בהיר למריחה'},
+  {id:11174,cat:1,name:'ממרח בייגלה מלוח 5 ק"ג'},
+  {id:11072,cat:1,name:'ממרח חלבה פרימיום 22 ק"ג'},
+  {id:11073,cat:1,name:'ממרח חלבה פרימיום 6 ק"ג'},
+  {id:11071,cat:1,name:'ממרח חלבה (22 ק"ג)'},
+  {id:10232,cat:1,name:'ממרח חלבה (6 ק"ג)'},
+  {id:10227,cat:1,name:'ממרח לבן בטעם שוקולד (22 ק"ג)'},
+  {id:10303,cat:1,name:'ממרח לבן חלבי 2*5 ק"ג'},
+  {id:11178,cat:1,name:'ממרח לוטוס (6 ק"ג)'},
+  {id:11175,cat:1,name:'ממרח נוטלה (3 ק"ג)'},
+  {id:10241,cat:1,name:'ממרח ספקולוס (6 ק"ג)'},
+  {id:10317,cat:1,name:'ממרח פיסטוק 2*5 ק"ג'},
+  {id:11172,cat:1,name:'ממרח פיסטוק 30% – 20 ק"ג'},
+  {id:11173,cat:1,name:'ממרח פררו רושה 5 ק"ג – חלבי'},
+  {id:11181,cat:1,name:'ממרח צ\'ארה (קינדר) 5 ק"ג פרווה'},
+  {id:10304,cat:1,name:'ממרח צ\'יארה חלבי 2*5 ק"ג'},
+  {id:10229,cat:1,name:'ממרח קינמון (22 ק"ג)'},
+  {id:10234,cat:1,name:'ממרח קפוצ\'ינו (6 ק"ג)'},
+  {id:11171,cat:1,name:'ממרח קקאו אגוזים 5 ק"ג'},
+  {id:10302,cat:1,name:'ממרח קקאו ואגוזי לוז חלבי 2*5 ק"ג'},
+  {id:10301,cat:1,name:'ממרח קקאו חלבי 10 ק"ג'},
+  {id:10324,cat:1,name:'ממרח קקאו פרווה 10 ק"ג'},
+  {id:10223,cat:1,name:'ממרח שוקולד – עומר'},
+  {id:10222,cat:1,name:'ממרח שוקולד MB'},
+  {id:10226,cat:1,name:'ממרח שוקולד MB טעם חמאה'},
+  {id:11170,cat:1,name:'ממרח שוקולד לבן ג\'ובאני 5 ק"ג'},
+  {id:10326,cat:1,name:'ממרח שוקולד לבן פרווה 5 ק"ג'},
+  {id:10246,cat:1,name:'ממרח שוקולד ללא סוכר'},
+  {id:11163,cat:1,name:'ממרח תמרים טעמי הגליל 22 ק"ג'},
+  {id:11164,cat:1,name:'ממרח תמרים טעמי הגליל בד"צ (22 ק"ג)'},
+  {id:11165,cat:1,name:'ממרח תמרים כהה עין יהב (22 ק"ג)'},
+  {id:11168,cat:1,name:'ממרח תמרים ללא סוכר 22 ק"ג'},
+  {id:10026,cat:1,name:'מקופלת פצפוצים לבן (10 ק"ג)'},
+  {id:11008,cat:1,name:'מתק – תחליף דבש (13 ק"ג)'},
+  {id:11009,cat:1,name:'מתק דבש 22 ק"ג'},
+  {id:11158,cat:1,name:'סילאן בג\'ריקן 10*1.5 ק"ג'},
+  {id:11160,cat:1,name:'סילאן בג\'ריקן (5 ק"ג)'},
+  {id:11153,cat:1,name:'סילאן טבעי 100% בדלי 25 ק"ג'},
+  {id:11140,cat:1,name:'סירופ בטעם מייפל גלון (5 ק"ג)'},
+  {id:11141,cat:1,name:'סירופ בטעם שוקולד'},
+  {id:11016,cat:1,name:'סירופ ריבת חלב קומידה 5 ק"ג'},
+  {id:10268,cat:1,name:'פרלין 56% לוז + 44% סוכר (5 ק"ג)'},
+  {id:10306,cat:1,name:'פרלין שוקולד חלב 5 ק"ג'},
+  {id:10308,cat:1,name:'פרלין שוקולד לבן 5 ק"ג'},
+  {id:10267,cat:1,name:'פרליני איטלקי 50%'},
+  {id:10057,cat:1,name:'פתיבר וניל 5.5 ק"ג'},
+  {id:10318,cat:1,name:'ציפוי מתקשה לבן חלבי 2*5 ק"ג'},
+  {id:10321,cat:1,name:'ציפוי מתקשה קקאו חלבי 2*5 ק"ג'},
+  {id:10059,cat:1,name:'צמקאו בלוק חום (5 ק"ג)'},
+  {id:10039,cat:1,name:'צמקאו מטבעות חום ללא סוכר (5 ק"ג)'},
+  {id:10100,cat:1,name:'קצפת צמחית גלידן (5 ק"ג)'},
+  {id:10029,cat:1,name:'קרם אוראו'},
+  {id:11179,cat:1,name:'קרם בטעם בייגלה (6 ק"ג)'},
+  {id:10221,cat:1,name:'קרם שוקולד מיוחד למילוי מאפינס'},
+  {id:11003,cat:1,name:'ריבה בטעם תות 10 ק"ג'},
+  {id:11004,cat:1,name:'ריבה צהובה (10 ק"ג)'},
+  {id:11012,cat:1,name:'ריבת חלב LITE'},
+  {id:11046,cat:1,name:'ריבת חלב פרווה טופי (13 ק"ג)'},
+  {id:11010,cat:1,name:'ריבת חלב קומידה (10 ק"ג)'},
+  {id:11011,cat:1,name:'ריבת חלב קונדיטור (5 ק"ג)'},
+  {id:11017,cat:1,name:'ריבת משמש 13 ק"ג'},
+  {id:11007,cat:1,name:'ריבת תות שדה – 13 ק"ג'},
+  // שוקולדים ותוספות
+  {id:10053,cat:2,name:'שוקולד חלב CALLEBAUT'},
+  {id:10043,cat:2,name:'שוקולד חלב חתם סופר'},
+  {id:10044,cat:2,name:'שוקולד לבן חתם סופר'},
+  {id:10001,cat:2,name:'שוקולד מריר 55%'},
+  {id:10035,cat:2,name:'מזרה איטלקי'},
+  {id:10030,cat:2,name:'מזרה חום'},
+  {id:10038,cat:2,name:'מזרה לבן'},
+  {id:10034,cat:2,name:'מזרה צבעוני'},
+  {id:10047,cat:2,name:'אצבעות צמקאו (8 ק"ג)'},
+  {id:10042,cat:2,name:'צמקאו מטבעות חום פרימיום'},
+  {id:10046,cat:2,name:'צמקאו מטבעות לבן פרימיום'},
+  {id:10060,cat:2,name:'צמקאו בלוק לבן 3 ק"ג'},
+  {id:30022,cat:2,name:'עיסת קקאו (25 ק"ג)'},
+  {id:40804,cat:2,name:'קקאו בארי קליבו 20-22'},
+  {id:40811,cat:2,name:'אבקת קקאו בארי קליבו EBONY'},
+  {id:20001,cat:2,name:'זיתים טבעות ירוק'},
+  {id:20003,cat:2,name:'זיתי קלמטה מגולענים 15.5 ק"ג'},
+  {id:20006,cat:2,name:'זיתים XXL חרוזית (10 ק"ג)'},
+  {id:20005,cat:2,name:'זיתים טבעות שחור'},
+  {id:20025,cat:2,name:'טונה גדול לבנה פאוץ 1 ק"ג'},
+  {id:20026,cat:2,name:'טונה גדול שימורים'},
+  {id:20010,cat:2,name:'מיונז הלמנס (4*3.44 ק"ג)'},
+  {id:20038,cat:2,name:'פטריות חתוך מוסדי'},
+  {id:20031,cat:2,name:'פטריות חתוכות קטן 400 גרם'},
+  {id:20084,cat:2,name:'רוטב אלף האיים (4 ליטר)'},
+  {id:20083,cat:2,name:'רוטב סויה'},
+  {id:20032,cat:2,name:'רוטב פיצה 24 ק"ג'},
+  {id:20028,cat:2,name:'רסק עגבניות 28'},
+  {id:10004,cat:2,name:'רצועות שוקולד חלב'},
+  {id:10003,cat:2,name:'רצועות שוקולד מריר פרווה'},
+  {id:10023,cat:2,name:'מיני מקופלת חום (5 ק"ג)'},
+  {id:10024,cat:2,name:'מיני מקופלת לבן (5 ק"ג)'},
+  {id:10025,cat:2,name:'מקופלת פצפוצים חום (10 ק"ג)'},
+  // שמן ומרגרינה
+  {id:30035,cat:3,name:'מרגרינה לבצק עלים'},
+  {id:30030,cat:3,name:'מרגרינה לבצק שמרים (מחמאה)'},
+  {id:30031,cat:3,name:'מרגרינה מחמאה ירושלים'},
+  {id:30036,cat:3,name:'מרגרינה עלים (פייסטרי) קשה'},
+  {id:30033,cat:3,name:'מרגרינה רכה – פריך'},
+  {id:30134,cat:3,name:'חמאת קוקוס (6 ק"ג)'},
+  {id:30020,cat:3,name:'חמאת קקאו בלוק (25 ק"ג)'},
+  {id:30021,cat:3,name:'חמאת קקאו מטבעות בדלי (3 ק"ג)'},
+  {id:30016,cat:3,name:'שומן קוקוס 26'},
+  {id:30017,cat:3,name:'שמן דקל נוזלי (16 ק"ג)'},
+  {id:30103,cat:3,name:'שמן זית 3.8 ליטר'},
+  {id:30113,cat:3,name:'שמן חמניה 1 ליטר'},
+  {id:30115,cat:3,name:'שמן חמניה 16 ק"ג'},
+  {id:30106,cat:3,name:'שמן חמניות 5 ליטר'},
+  {id:30100,cat:3,name:'שמן סויה – 17.4 ליטר'},
+  {id:30118,cat:3,name:'שמן סויה 5 ליטר'},
+  {id:30112,cat:3,name:'שמן קוקוס אורגני'},
+  {id:30116,cat:3,name:'שמן קנולה – בקבוק 10 ליטר'},
+  {id:30101,cat:3,name:'שמן קנולה 5 ליטר'},
+  {id:30105,cat:3,name:'שמן קנולה ליטר'},
+  // תמציות ותבלינים
+  {id:40410,cat:4,name:'אבקת אפיה (1 ק"ג)'},
+  {id:40424,cat:4,name:'אבקת סוכר אשבל 1 ק"ג'},
+  {id:40423,cat:4,name:'אבקת סוכר ברמן – 10 ק"ג'},
+  {id:40435,cat:4,name:'אבקת סוכר תוצרת חוץ – 25 ק"ג'},
+  {id:40810,cat:4,name:'אבקת קקאו טבעית T-3'},
+  {id:40472,cat:4,name:'אגר אגר'},
+  {id:40478,cat:4,name:'אוסם פודינג אינסטנט וניל'},
+  {id:40493,cat:4,name:'דבש 1 ק"ג'},
+  {id:40456,cat:4,name:'דבש דבורים טהור (25 ק"ג)'},
+  {id:40401,cat:4,name:'דקסטרוזה'},
+  {id:40474,cat:4,name:'ג\'לטין OK'},
+  {id:40473,cat:4,name:'ג\'לטין דגים (25 ק"ג)'},
+  {id:40417,cat:4,name:'ג\'לטין דגים בד"צ עד"ח (25 ק"ג)'},
+  {id:40690,cat:4,name:'מלח בשק'},
+  {id:40692,cat:4,name:'מלח חבילות דק'},
+  {id:40431,cat:4,name:'מלטודקסטרין (25 ק"ג)'},
+  {id:40420,cat:4,name:'מלטיטול אבקה'},
+  {id:40427,cat:4,name:'מלטיטול נוזלי (275 ק"ג)'},
+  {id:40451,cat:4,name:'מאפינס וניל – קרטון 15 ק"ג'},
+  {id:40453,cat:4,name:'מאפינס שוקולד – קרטון 15 ק"ג'},
+  {id:40600,cat:4,name:'קמח בשק'},
+  {id:40602,cat:4,name:'קמח חבילות'},
+  {id:40601,cat:4,name:'קמח לחם שטיבל (25 ק"ג)'},
+  {id:40609,cat:4,name:'קמח מנופה בוואקום (25 ק"ג)'},
+  {id:40612,cat:4,name:'קמח אורז'},
+  {id:40421,cat:4,name:'סודה לשתיה (1 ק"ג)'},
+  {id:40405,cat:4,name:'סודה לשתיה (25 ק"ג)'},
+  {id:40660,cat:4,name:'סוכר בשק'},
+  {id:40664,cat:4,name:'סוכר חום דמררה (25 ק"ג)'},
+  {id:40665,cat:4,name:'סוכר חום כהה 25 ק"ג'},
+  {id:40663,cat:4,name:'סוכר קנים אורגני (25 ק"ג)'},
+  {id:40413,cat:4,name:'סוכר וניל'},
+  {id:40426,cat:4,name:'סוכר וניל (10 ק"ג) – גלעם'},
+  {id:40506,cat:4,name:'שמרים 10 ק"ג ויקטוריה בורגמן'},
+  {id:40503,cat:4,name:'שמרים טריים (10 ק"ג)'},
+  {id:40500,cat:4,name:'שמרים יבשים בורגמן 10 ק"ג'},
+  {id:40491,cat:4,name:'קפה נמס בדלי 4 ק"ג'},
+  {id:40490,cat:4,name:'קפה נמס קונגו ארוז 20 ק"ג'},
+  {id:40492,cat:4,name:'קפה שחור עלית 1 ק"ג'},
+  {id:40807,cat:4,name:'קקאו דה זאן D11DL'},
+  {id:40801,cat:4,name:'קקאו דזאן D-11B'},
+  {id:40802,cat:4,name:'קקאו דזאן D-11S'},
+  {id:40800,cat:4,name:'קקאו דזאן DL-21'},
+  {id:40487,cat:4,name:'קרם פטיסייר – 13 ק"ג'},
+  {id:40513,cat:4,name:'קרמל נוזלי (30 ק"ג)'},
+  {id:40319,cat:4,name:'תבלין אורגנו'},
+  {id:40322,cat:4,name:'תבלין בזיליקום'},
+  {id:40320,cat:4,name:'תבלין כורכום'},
+  {id:40323,cat:4,name:'תבלין כמון'},
+  {id:40300,cat:4,name:'תבלין קינמון'},
+  {id:40309,cat:4,name:'תבלין פפריקה מתוקה'},
+  {id:40303,cat:4,name:'תבלין פלפל שחור'},
+  {id:40301,cat:4,name:'תבלין שום'},
+  {id:40010,cat:4,name:'תמצית וניל'},
+  {id:40020,cat:4,name:'תמצית חמאה'},
+  {id:40012,cat:4,name:'תמצית לימון'},
+  {id:40014,cat:4,name:'תמצית רום'},
+  {id:40026,cat:4,name:'תמצית פיסטוק'},
+  {id:40030,cat:4,name:'תמצית שוקולד'},
+  {id:40036,cat:4,name:'תמצית שקדים'},
+  {id:40016,cat:4,name:'תמצית תפוז'},
+  // קטניות פירות ואגוזים
+  {id:50221,cat:5,name:'אגוז מלך גרוס'},
+  {id:50236,cat:5,name:'אגוז מלך לב 10 ק"ג 80%'},
+  {id:50234,cat:5,name:'אגוזי מלך קליפורניה (11.35 ק"ג)'},
+  {id:50030,cat:5,name:'אורז בסמטי מעולה ארוך'},
+  {id:20117,cat:5,name:'אננס טבעי – 10 ק"ג'},
+  {id:50232,cat:5,name:'בוטנים ג14'},
+  {id:50218,cat:5,name:'בוטנים חצאים'},
+  {id:50220,cat:5,name:'בוטנים חצאים מולבנים 25 ק"ג'},
+  {id:50036,cat:5,name:'בורגול דק'},
+  {id:50035,cat:5,name:'בורגול עבה'},
+  {id:50033,cat:5,name:'בננה צ\'יפס (8 ק"ג)'},
+  {id:50026,cat:5,name:'גרעיני דלעת קלוף – 25 ק"ג'},
+  {id:50021,cat:5,name:'גרעיני חמניה מקולף (5 ק"ג)'},
+  {id:50013,cat:5,name:'זרעי ציה'},
+  {id:50104,cat:5,name:'חומוס (25 ק"ג)'},
+  {id:20116,cat:5,name:'חמוציות אמריקאיות פרימיום'},
+  {id:20124,cat:5,name:'חמוציות ברכז תפוחים'},
+  {id:50019,cat:5,name:'כוסמת (25 ק"ג)'},
+  {id:50114,cat:5,name:'לוז טבעי 9/11'},
+  {id:50225,cat:5,name:'לוז טבעי חצאים (שבור)'},
+  {id:50261,cat:5,name:'לוז טבעי שלם 11/13'},
+  {id:50249,cat:5,name:'לוז מולבן גרוס 1-3 (10 ק"ג)'},
+  {id:20111,cat:5,name:'מנגו דל סוכר – 20 ק"ג'},
+  {id:20112,cat:5,name:'מנגו קוביות 5 מ"מ'},
+  {id:20110,cat:5,name:'משמש טבעי (10 ק"ג)'},
+  {id:20118,cat:5,name:'משמש מיובש'},
+  {id:50247,cat:5,name:'משמש קוביות (10 ק"ג)'},
+  {id:50238,cat:5,name:'פיסטוק בקליפה 18-22'},
+  {id:50266,cat:5,name:'פיסטוק חצאים EXTRA GREEN'},
+  {id:50252,cat:5,name:'פיסטוק טחון'},
+  {id:50241,cat:5,name:'פיסטוק מקולף חצאים (10 ק"ג)'},
+  {id:50245,cat:5,name:'פקאן טבעי גרוס 3-5'},
+  {id:50242,cat:5,name:'פקאן סיני (מסוכר)'},
+  {id:50028,cat:5,name:'פרג שלם כחול (25 ק"ג)'},
+  {id:50020,cat:5,name:'פשתן – זרעי פשתן'},
+  {id:20114,cat:5,name:'צימוק אוכמניה'},
+  {id:20119,cat:5,name:'צימוק אמריקאי חום'},
+  {id:20122,cat:5,name:'צימוק אמריקאי לבן (13.65 ק"ג)'},
+  {id:20123,cat:5,name:'צימוק כהה (10 ק"ג)'},
+  {id:50233,cat:5,name:'צנובר סיני 25 ק"ג'},
+  {id:50254,cat:5,name:'קוקוס טחון (25 ק"ג)'},
+  {id:50258,cat:5,name:'קוקוס לבן ללא סולפיטים (25 ק"ג)'},
+  {id:50248,cat:5,name:'קוקוס לבן פיליפיני (22.7 ק"ג)'},
+  {id:50251,cat:5,name:'קוקוס ממותק אטריות (22.7 ק"ג)'},
+  {id:50250,cat:5,name:'קוקוס קלוי קראנץ (22.7 ק"ג)'},
+  {id:50016,cat:5,name:'קינואה לבנה (25 ק"ג)'},
+  {id:50270,cat:5,name:'קשיו 160'},
+  {id:50211,cat:5,name:'קשיו SP'},
+  {id:50214,cat:5,name:'קשיו גרוס טבעי BB'},
+  {id:50213,cat:5,name:'קשיו חצאים LP'},
+  {id:50210,cat:5,name:'קשיו שלם 320'},
+  {id:50255,cat:5,name:'רצועות קוקוס מיובש (10 ק"ג)'},
+  {id:50010,cat:5,name:'שומשום EXTRA'},
+  {id:50011,cat:5,name:'שומשום לבן (5 ק"ג)'},
+  {id:50015,cat:5,name:'שומשום מלא (25 ק"ג)'},
+  {id:50014,cat:5,name:'שומשום שחור'},
+  {id:50034,cat:5,name:'שיבולת שועל דקה (20 ק"ג)'},
+  {id:50022,cat:5,name:'שיבולת שועל עבה (25 ק"ג)'},
+  {id:50216,cat:5,name:'שקד בינוני שבור 20 ק"ג'},
+  {id:50200,cat:5,name:'שקד טבעי אמריקאי'},
+  {id:50257,cat:5,name:'שקד טבעי טחון (11.35 ק"ג)'},
+  {id:50205,cat:5,name:'שקד טבעי ישראלי בינוני (20 ק"ג)'},
+  {id:50207,cat:5,name:'שקד טחון מולבן אמריקאי (11.35 ק"ג)'},
+  {id:50223,cat:5,name:'שקד מולבן גפרור/מקלות (10 ק"ג)'},
+  {id:50032,cat:5,name:'שקד מולבן גרוס אמריקאי (11.35 ק"ג)'},
+  {id:50269,cat:5,name:'שקד מולבן חצאים (10 ק"ג)'},
+  {id:50204,cat:5,name:'שקד מולבן טחון מנולט (11.35 ק"ג)'},
+  {id:50206,cat:5,name:'שקד מולבן טחון ספרדי (10 ק"ג)'},
+  {id:50217,cat:5,name:'שקד מולבן פרוס (10 ק"ג)'},
+  {id:50243,cat:5,name:'שקד מולבן פרוס (1 ק"ג)'},
+  {id:50265,cat:5,name:'שקד מולבן שלם (10 ק"ג)'},
+  {id:50215,cat:5,name:'שקד קלוי גרוס'},
+  {id:20125,cat:5,name:'תאנים מיובשות'},
+  {id:20115,cat:5,name:'תות שדה קוביות 5 מ"מ'},
+  {id:50230,cat:5,name:'תפוח עץ טבעות 10 ק"ג'},
+  // עזרי אפייה
+  {id:80051,cat:8,name:'כפפות לטקס L/XL'},
+  {id:80037,cat:8,name:'מגש קרטון 20 זהב (250 יח\')'},
+  {id:80038,cat:8,name:'מגש קרטון אינגליש קייק'},
+  {id:80104,cat:8,name:'נייר אפיה 60/60 (1000 יח\')'},
+  {id:80106,cat:8,name:'נייר אפיה 60/80 (500 יח\')'},
+  {id:80102,cat:8,name:'נייר אפיה סיליקון 50/70 (1000 יח\')'},
+  {id:80107,cat:8,name:'נייר אפייה 30/30 (1000 יחידות)'},
+  {id:80101,cat:8,name:'נייר אפייה 40/70 לבן (1000 יח\')'},
+  {id:80105,cat:8,name:'נייר אפייה לבן 50/80 (500 יח\')'},
+  {id:80103,cat:8,name:'נייר אפייה סיליקון חום 40/60 (1000 יח\')'},
+  {id:80100,cat:8,name:'נייר אפייה סיליקון לבן 40/60 (1000 יח\')'},
+  {id:80021,cat:8,name:'נייר ניגוב 6/1'},
+  {id:80018,cat:8,name:'סינרים חד פעמי גדול 100 יחידות'},
+  {id:80033,cat:8,name:'צלחת טורט זהב 24 (100 יח\')'},
+  {id:80032,cat:8,name:'צלחת כסף בינוני קוטר 24 (100 יח\')'},
+  {id:80034,cat:8,name:'צלחת כסף גדול קוטר 29 (100 יח\')'},
+  {id:80040,cat:8,name:'קופסא בורקס 1.5 ק"ג לבן (100 יח\')'},
+  {id:80041,cat:8,name:'קופסא מעוצבת 1.5 ק"ג (150 יח\')'},
+  {id:80024,cat:8,name:'קרטון 1.5 ק"ג לבן (100 יח\')'},
+  {id:80022,cat:8,name:'קרטון בורקס 1.5 ק"ג חום (150 יח\')'},
+  {id:80010,cat:8,name:'שק זילוף בד גדול'},
+  {id:80012,cat:8,name:'שק זילוף בד קטן'},
+  {id:80014,cat:8,name:'שק זילוף חד פעמי גדול'},
+  {id:80016,cat:8,name:'שק זילוף חד פעמי קטן'},
+  {id:80036,cat:8,name:'תבנית אינגליש קייק (1000 יח\')'},
+  {id:80035,cat:8,name:'תחתית זהב/כסף 28 ס"מ'},
+  {id:80031,cat:8,name:'תחתית לטורט זהב/כסף קוטר 24 ס"מ'}
 ];
