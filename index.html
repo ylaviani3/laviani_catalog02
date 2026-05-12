@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>רמי לויאני עסקי מזון בע״מ – קטלוג מוצרים</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- HEADER -->
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <img src="logo.png" alt="רמי לויאני עסקי מזון" class="logo-img" />
+    </div>
+    <div class="header-info">
+      <span class="header-address">📍 אזור התעשייה ברקן</span>
+      <a href="tel:+972" class="header-phone">📞 צור קשר</a>
+    </div>
+  </div>
+  <nav class="main-nav">
+    <ul>
+      <li><a href="#spreads" class="nav-link" data-cat="1">ממרחים ומחיות</a></li>
+      <li><a href="#chocolates" class="nav-link" data-cat="2">שוקולדים ותוספות</a></li>
+      <li><a href="#oils" class="nav-link" data-cat="3">שמן ומרגרינה</a></li>
+      <li><a href="#spices" class="nav-link" data-cat="4">תמציות ותבלינים</a></li>
+      <li><a href="#nuts" class="nav-link" data-cat="5">קטניות פירות ואגוזים</a></li>
+      <li><a href="#baking" class="nav-link" data-cat="8">עזרי אפייה</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- HERO -->
+
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>קטלוג מוצרים מקצועי</h1>
+    <p>חומרי גלם איכותיים למאפיות, קונדיטוריות ומפעלי מזון</p>
+    <div class="hero-badges">
+      <span class="badge">🏆 יבוא ישיר</span>
+      <span class="badge">✅ כשר למהדרין</span>
+      <span class="badge">🚚 אספקה ארצית</span>
+      <span class="badge">🌍 מוצרים בינלאומיים</span>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH BAR -->
+
+<div class="search-bar-wrap">
+  <div class="search-inner">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="חפשו מוצר לפי שם או קוד..." oninput="filterProducts()" />
+    <button class="search-clear" onclick="clearSearch()">✕</button>
+  </div>
+  <div id="searchResults" class="search-results-count"></div>
+</div>
+
+<!-- CATEGORY SECTIONS -->
+
+<main class="catalog-main" id="catalogMain">
+
+  <!-- ממרחים ומחיות -->
+
+  <section class="category-section" id="spreads" data-cat="1">
+    <div class="section-header">
+      <div class="section-icon">🍫</div>
+      <div>
+        <h2>ממרחים ומחיות</h2>
+        <p class="section-sub">ממרחי שוקולד, פיסטוק, חלבה, פירות ועוד</p>
+      </div>
+    </div>
+    <div class="products-grid" id="grid-1"></div>
+  </section>
+
+  <!-- שוקולדים -->
+
+  <section class="category-section" id="chocolates" data-cat="2">
+    <div class="section-header">
+      <div class="section-icon">🍬</div>
+      <div>
+        <h2>שוקולדים ותוספות</h2>
+        <p class="section-sub">שוקולדים, ציפויים, מזרות ועוד</p>
+      </div>
+    </div>
+    <div class="products-grid" id="grid-2"></div>
+  </section>
+
+  <!-- שמן ומרגרינה -->
+
+  <section class="category-section" id="oils" data-cat="3">
+    <div class="section-header">
+      <div class="section-icon">🧈</div>
+      <div>
+        <h2>שמן ומרגרינה</h2>
+        <p class="section-sub">שמנים, מרגרינות, חמאת קקאו וקוקוס</p>
+      </div>
+    </div>
+    <div class="products-grid" id="grid-3"></div>
+  </section>
+
+  <!-- תמציות ותבלינים -->
+
+  <section class="category-section" id="spices" data-cat="4">
+    <div class="section-header">
+      <div class="section-icon">🌿</div>
+      <div>
+        <h2>תמציות ותבלינים</h2>
+        <p class="section-sub">קמחים, סוכרים, תבלינים, תמציות וחומרי אפייה</p>
+      </div>
+    </div>
+    <div class="products-grid" id="grid-4"></div>
+  </section>
+
+  <!-- קטניות פירות ואגוזים -->
+
+  <section class="category-section" id="nuts" data-cat="5">
+    <div class="section-header">
+      <div class="section-icon">🌰</div>
+      <div>
+        <h2>קטניות, פירות ואגוזים</h2>
+        <p class="section-sub">שקדים, אגוזים, פירות מיובשים, קטניות ודגנים</p>
+      </div>
+    </div>
+    <div class="products-grid" id="grid-5"></div>
+  </section>
+
+  <!-- עזרי אפייה -->
+
+  <section class="category-section" id="baking" data-cat="8">
+    <div class="section-header">
+      <div class="section-icon">🥐</div>
+      <div>
+        <h2>עזרי אפייה</h2>
+        <p class="section-sub">נייר אפייה, שקי זילוף, מגשים ואביזרים</p>
+      </div>
+    </div>
+    <div class="products-grid" id="grid-8"></div>
+  </section>
+
+</main>
+
+<!-- REQUEST MODAL -->
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-product-img-wrap">
+      <img id="modalImg" src="" alt="" />
+    </div>
+    <div class="modal-info">
+      <span class="modal-code" id="modalCode"></span>
+      <h3 id="modalName"></h3>
+      <p class="modal-cat" id="modalCat"></p>
+      <div class="modal-actions">
+        <button class="btn-primary" onclick="sendRequest()">📩 שלח בקשת הצעת מחיר</button>
+        <button class="btn-secondary" onclick="closeModal()">סגור</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <img src="logo.png" alt="רמי לויאני" class="footer-logo" />
+    <div class="footer-details">
+      <p><strong>רמי לויאני עסקי מזון בע״מ</strong></p>
+      <p>📍 אזור התעשייה ברקן</p>
+      <p>© 2025 כל הזכויות שמורות</p>
+    </div>
+  </div>
+</footer>
+
+<script src="products.js"></script>
+
+<script src="app.js"></script>
+
+</body>
+</html>
